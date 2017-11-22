@@ -1,4 +1,4 @@
-#define MASTER 1
+#define MASTER 0
 
 /* TODO
 EEPROM : update si trop de difference
