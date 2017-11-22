@@ -1,4 +1,4 @@
-#define MASTER 0
+#define MASTER 1
 // version git
 /* TODO
 EEPROM : update si trop de difference
@@ -15,7 +15,7 @@ OTA : à tester
 // (2*360.)/((1*60+20)) -> 2 tour en 1'20" °/sec
 #if (MASTER == 1)
   float goal_speed_part1 = 9.78; //°.s-1
-  float goal_speed_part2 = 10.97;
+//  float goal_speed_part2 = 10.97;
 #else
   float goal_speed_part1 = 9.78;
   float goal_speed_part2 = 10.97;
