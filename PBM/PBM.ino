@@ -1,5 +1,5 @@
 #define MASTER 0
-
+// version git
 /* TODO
 EEPROM : update si trop de difference
 re_sync : demandé par le slave, à refaire toutes les X minutes ?
