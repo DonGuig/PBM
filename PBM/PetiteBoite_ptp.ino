@@ -15,7 +15,7 @@ bool slave_sync = false;
 long t1, t1p, t2, t2p, slave_offset;
 
 // millis() avec offset !
-unsigned int sync_millis() {
+unsigned long sync_millis() {
 #if MASTER==0
   return millis() - slave_offset;
 #else

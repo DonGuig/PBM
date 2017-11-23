@@ -15,7 +15,7 @@ void servoLoop() {
     if (abs(diff_angle_master) <= 5) { // near master
 //        Serial.print("near_master ");
       if (!was_near) { // pour la premiere fois ?
-        writeSpeed(start_speed + diff_angle_master * 0.1);
+        writeSpeed(start_PWM_speed + diff_angle_master * 0.1);
         was_near = true;   
       }
       else { 
@@ -26,8 +26,8 @@ void servoLoop() {
             speed_step = 0.1;
           else if (speed_step <= -0.1)
             speed_step = -0.1;         
-          writeSpeed(motor_speed + speed_step);
-          if (motor_speed < 0.5) { // TOO SLOW
+          writeSpeed(motor_PWM_speed + speed_step);
+          if (motor_PWM_speed < 0.5) { // TOO SLOW
             Serial.println("MIN ");
             writeSpeed(0.5);
           }
@@ -42,7 +42,7 @@ void servoLoop() {
       Serial.print("far_master ");
       if (diff_angle_master < 300) { // au plus vite
         Serial.print(" go fast  ");
-        writeSpeed(max_speed); 
+        writeSpeed(max_PWM_speed); 
       } 
       else if (diff_angle_master > 390){ // stop
         Serial.print(" go_slow  ");
@@ -59,15 +59,14 @@ void servoLoop() {
 //    Serial.print(" angle_diff_coef: ");Serial.print(10*diff_angle_master*0.2);
 //    Serial.print(" speed_diff_coef: ");Serial.print(10*diff_speed*1);
 //    Serial.print(" step: ");Serial.print(speed_step);
-//    Serial.print(" speed: ");Serial.print(motor_speed);
+//    Serial.print(" speed: ");Serial.print(motor_PWM_speed);
 //    Serial.print(" angle: ");Serial.print(local_angle);
 //    Serial.print("angle_master: ");Serial.print(master_angle);
 //     Serial.print(" speed_feed ");Serial.print(speed_feedback*1000);
 //     Serial.print(" master_feed ");Serial.println(master_speed_feedback*1000);
 //     Serial.print(" angle_diff ");Serial.print(diff_angle);
 //    Serial.print(" voltage : ");Serial.println(batteryVoltage);
-                
-    old_local_time = local_time; old_local_angle = local_angle;
+
     new_point = false; 
   }
 }
