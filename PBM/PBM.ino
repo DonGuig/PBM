@@ -6,8 +6,6 @@ re_sync : demandé par le slave, à refaire toutes les X minutes ?
 OTA : à tester
 */
 
-
-
 //I2C input (sensor & motor) : SCL D1, SDA D2
 //Button input : GND, (D0 -> 10k/3.3V)
 //Battery Input : GND --> 220 Ohms --> A0 <-- 1000 Ohms <-- Battery
@@ -15,7 +13,7 @@ OTA : à tester
 // (2*360.)/((1*60+20)) -> 2 tour en 1'20" °/sec
 #if (MASTER == 1)
   float goal_speed_part1 = 9.78; //°.s-1
-//  float goal_speed_part2 = 10.97;
+  float goal_speed_part2 = 10.97;
 #else
   float goal_speed_part1 = 9.78;
   float goal_speed_part2 = 10.97;

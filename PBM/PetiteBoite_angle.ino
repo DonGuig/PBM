@@ -17,6 +17,7 @@ float offset_angle = 0; // en lien avec EEPROM
 
 float local_angle, old_local_angle, master_angle;
 float old_speed_feedback;
+float acceleration;
 
 unsigned int master_time;
 
@@ -92,6 +93,8 @@ void getAngles() {
   diff_angle = local_angle - old_local_angle; // at normal speed near 0.8
   diff_time = local_time - old_local_time;
   speed_feedback = 1000.*diff_angle / diff_time; // °.s-1
+  acceleration = speed_feedback - old_speed_feedback;
+  old_speed_feedback = speed_feedback;
   
 #if MASTER == 0 // SLAVE
   //Calcul du point ou était le slave lorsque le master à mesuré
