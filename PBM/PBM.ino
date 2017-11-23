@@ -6,8 +6,6 @@ re_sync : demandé par le slave, à refaire toutes les X minutes ?
 OTA : à tester
 */
 
-
-
 //I2C input (sensor & motor) : SCL D1, SDA D2
 //Button input : GND, (D0 -> 10k/3.3V)
 //Battery Input : GND --> 220 Ohms --> A0 <-- 1000 Ohms <-- Battery
