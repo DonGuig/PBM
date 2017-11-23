@@ -47,7 +47,22 @@ void getFirstAngle() {
 }
 
 
-
+void checkMicroSwitch() {
+  if (microSwitchStateChange) {
+    if (microSwitchState == HIGH) {
+      goal_speed = goal_speed_part1;
+      writeSpeed(motor_speed*(goal_speed_part1/goal_speed_part2));
+      #if MASTER == 0
+      checkWifi();
+      #endif
+    }
+    else {
+      goal_speed = goal_speed_part2;
+      writeSpeed(motor_speed*(goal_speed_part2/goal_speed_part1));
+    }     
+    microSwitchStateChange = false;
+  }
+}
 
 
 void getAngles() {

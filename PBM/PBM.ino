@@ -10,6 +10,7 @@ OTA : à tester
 //Button input : GND, (D0 -> 10k/3.3V)
 //Battery Input : GND --> 220 Ohms --> A0 <-- 1000 Ohms <-- Battery
 
+
 // (2*360.)/((1*60+20)) -> 2 tour en 1'20" °/sec
 #if (MASTER == 1)
   float goal_speed_part1 = 10.05; //°.s-1  (OLD : 9.78)
@@ -47,7 +48,8 @@ void setup() {
   setupWifi();
 
   setupOTA();
-  
+
+  setupUdp();
   #if MASTER == 0
   re_sync();
   #endif
@@ -57,6 +59,8 @@ void setup() {
 
 
 void loop() {
+  checkMicroSwitch(); // Dans Angle
+  
   receiveUdp(); // UDP INPUT 
   
   readBattery();  

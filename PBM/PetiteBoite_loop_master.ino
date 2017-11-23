@@ -7,20 +7,7 @@ void servoLoop() {
     getAngles();
     
    if (diff_angle > 0.1 && diff_angle < 10 && abs(acceleration) < 1.5) { // mesure error or near 360
-    sendUdp("SYNC_POINT " + String(local_time) + " " + String(local_angle));
-
-    if (microSwitchStateChange) {
-      if (microSwitchState == HIGH) {
-        goal_speed = goal_speed_part1;
-        writeSpeed(motor_speed*(goal_speed_part1/goal_speed_part2));
-      }
-      else {
-        goal_speed = goal_speed_part2;
-        writeSpeed(motor_speed*(goal_speed_part2/goal_speed_part1));
-      }
-      
-      microSwitchStateChange = false;
-    }
+    sendUdp("SYNC_POINT " + String(local_time) + " " + String(local_angle));   
     
     if (speed_feedback < goal_speed * 0.99) { //1%
       if (speed_feedback < goal_speed * 0.90) {

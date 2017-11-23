@@ -4,6 +4,8 @@
 #include <WiFiClient.h> 
 #include <WiFiUdp.h>
 
+
+
 //----------------------------- WIFI -------------------------------------//
 /**/const char *ssid = "EspHalSalaBox1", *password = "iloveesp8266";      //
 /**/IPAddress gateway(192,168,1,1), subnet(255,255,255,0);                //
@@ -16,6 +18,8 @@
 /**/  unsigned int localUdpPort = 1235, remoteUdpPort = 1234;             //
 /**/#endif                                                                //
 //------------------------------------------------------------------------// 
+
+
 
 // UDP ----------------------
 WiFiUDP Udp;
@@ -30,25 +34,38 @@ void setupWifi() {
   WiFi.softAPConfig(local_IP, gateway, subnet);    
   WiFi.softAP(ssid, password, 1, 1);  //SSID, PASS, CANAL, CACHÉ
    
-  Udp.begin(localUdpPort);
 #else
 
   Serial.println("*** SLAVE ***");
   Serial.print("Connecting to ");Serial.println(ssid);
+  WiFi.mode(WIFI_STA);
   WiFi.config(local_IP, gateway, subnet);WiFi.mode(WIFI_STA);WiFi.begin(ssid, password);      
-  while (WiFi.status() != WL_CONNECTED) {delay(500);Serial.print(".");}
+//  while (WiFi.status() != WL_CONNECTED) {delay(500);Serial.print(".");}
+  while (WiFi.waitForConnectResult() != WL_CONNECTED) {Serial.println("Connection Failed! Rebooting...");delay(5000);ESP.restart();}
   Serial.println("");Serial.println("WiFi connected");
-
-  Udp.begin(localUdpPort); 
-   
+ 
 #endif
   Serial.println("WIFI SETUP INFORMATION");
   WiFi.printDiag(Serial);
   Serial.println("END WIFI SETUP INFORMATION");
 }
 
+#if MASTER == 0
+void checkWifi() {
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("disconnected");
+    while (WiFi.waitForConnectResult() != WL_CONNECTED) {Serial.println("Connection Failed! Rebooting...");delay(5000);ESP.restart();}
+  }
+  else
+    Serial.println("Still Connected");
+}
+#endif
 
 //******************************** VOID UDP ***************************************
+void setupUdp() {
+  Udp.begin(localUdpPort); 
+}
+
 void routeUdp() {
   char *strAddress = strtok(incomingPacket, " ");
 #if MASTER == 1
