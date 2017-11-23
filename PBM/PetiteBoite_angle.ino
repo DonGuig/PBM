@@ -63,14 +63,11 @@ void getAngles() {
   // changement etat microswitch
   microSwitchState = digitalRead(microSwitchPin); 
   if (microSwitchState != old_microSwitchState) {
-//    Serial.print("microswitch CHANGE, new offset : ");    
+    microSwitchStateChange = true;
+    Serial.println("microswitch CHANGE, new offset : ");    
     if (microSwitchState == HIGH) { //HIGH pas appuyé
-      offset_angle = 360 - angle - 3; //-3 = SAFETY
-      goal_speed = goal_speed_part1;
+      offset_angle = 360 - angle - 3; //-3 = SAFETY     
       updateEeprom();
-    }
-    else {
-      goal_speed = goal_speed_part2;
     }
     old_microSwitchState = microSwitchState;
   } 

@@ -31,6 +31,8 @@ float diff_angle,diff_time, speed_feedback, diff_speed, diff_angle_master;
 
 unsigned int local_time, old_local_time;
 
+bool microSwitchStateChange = false;
+
 void setup() { 
   Serial.begin(115200);
   
