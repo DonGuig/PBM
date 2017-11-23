@@ -55,7 +55,7 @@ void getAngles() {
 //  delay(10);
 //  float angle = angleSensor.getMovingAvgExp(U_DEG);
 
-    float angle = angleSensor.angleR(U_DEG, true);
+  float angle = angleSensor.angleR(U_DEG, true);
   
   local_time = sync_millis(); 
   

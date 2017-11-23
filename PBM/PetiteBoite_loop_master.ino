@@ -3,7 +3,7 @@
 #if MASTER == 1 // UNIQUEMENT POUR LE MASTER
 
 void servoLoop() {
-  if ((sync_millis() - old_local_time) > 100) { // boucle de communication et asservissement
+  if ((sync_millis() - old_local_time) > 500) { // boucle de communication et asservissement
             
     getAngles();
     

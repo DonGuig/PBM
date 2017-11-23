@@ -14,16 +14,16 @@ OTA : à tester
 
 // (2*360.)/((1*60+20)) -> 2 tour en 1'20" °/sec
 #if (MASTER == 1)
-  float goal_speed_part1 = 9.78; //°.s-1
-//  float goal_speed_part2 = 10.97;
+  float goal_speed_part1 = 10.05; //°.s-1  (OLD : 9.78)
+  float goal_speed_part2 = 10.97;
 #else
-  float goal_speed_part1 = 9.78;
+  float goal_speed_part1 = 10.05;
   float goal_speed_part2 = 10.97;
 #endif
 
 
 // Variable d'angulation / Vitesse
-float start_speed = 2.64, motor_speed = start_speed; // init PWM (0-100)
+float start_speed = 2.884, motor_speed = start_speed; // init PWM (0-100)
 float goal_speed = goal_speed_part1; 
 float max_speed = 5; 
 
