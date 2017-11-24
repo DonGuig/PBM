@@ -106,3 +106,10 @@ void receiveUdp() {
     delay(1);
 }
 
+void receive_slave_syncPoint(char* strAddress){
+  if (strcmp(strAddress,"SYNC_POINT") == 0) {
+    master_time = strtoul(strtok(NULL, " "), NULL, 0);
+    master_angle = strtod(strtok(NULL, " "), NULL);
+    new_point = true;
+  }
+}

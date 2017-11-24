@@ -1,18 +1,12 @@
-
-
 // MICROSWITCH
 int microSwitchPin = D0;
 bool microSwitchState = LOW;
 bool old_microSwitchState = LOW;
 
-
 void setupMicroSwitch() {
-
 	  pinMode(microSwitchPin, INPUT);
 	  microSwitchState = digitalRead(microSwitchPin);
 	  old_microSwitchState = microSwitchState;
-	  
-
 }
 
 bool checkMicroSwitchState() {
@@ -20,19 +14,19 @@ bool checkMicroSwitchState() {
 
 // HERE WE SHOULD PUT EVERYTHING THAT HAS TO HAPPEN WHEN THE MICROSWITCH CHANGES STATE !!!!
 	if (microSwitchState != old_microSwitchState) {
-//    	microSwitchStateChange = true;
     	Serial.println("microswitch CHANGE");   
-
     	if (microSwitchState == HIGH) { //we're coming back to part1
       		//Serial.println("New offset_angle ");
     		changeOffset();
+        updateEeprom();
 
     		writeSpeed(motor_PWM_speed*(goal_speed_part1/goal_speed_part2));
     		goal_speed = goal_speed_part1;
 
-    		#if MASTER == 0
+    		#if MASTER == 0        
       		checkWifi();
-      		#endif
+          re_sync();
+      	#endif
     	}
     	else { // we're entering part2
     		writeSpeed(motor_PWM_speed*(goal_speed_part2/goal_speed_part1));

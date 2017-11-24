@@ -1,17 +1,13 @@
-#define MASTER 1
-// version git
-/* TODO
-EEPROM : update si trop de difference
-re_sync : demandé par le slave, à refaire toutes les X minutes ?
-OTA : à tester
+// SELECTION MASTER or SLAVE
+#define MASTER 0
+/*
+ * ELECTRONIC CONNECTION :
+ * 
+ * I2C input (sensor & motor) : SCL D1, SDA D2
+ * Button input : GND, (D0 -> 10k/3.3V)
+ * Battery Input : GND --> 220 Ohms --> A0 <-- 1000 Ohms <-- Battery
 */
 
-//I2C input (sensor & motor) : SCL D1, SDA D2
-//Button input : GND, (D0 -> 10k/3.3V)
-//Battery Input : GND --> 220 Ohms --> A0 <-- 1000 Ohms <-- Battery
-
-
-// (2*360.)/((1*60+20)) -> 2 tour en 1'20" °/sec
 #if (MASTER == 1)
   float goal_speed_part1 = 10.05; //°.s-1  (OLD : 9.78)
   float goal_speed_part2 = 12.00;
@@ -21,28 +17,24 @@ OTA : à tester
   float goal_speed_part2 = 12.00;
 #endif
 
-
-// Variable d'angulation / Vitesse
+// Angle & Speed Variable
 float start_PWM_speed = 2.884, motor_PWM_speed = start_PWM_speed; // init PWM (0-100)
 float max_PWM_speed = 5;
 
 float goal_speed = goal_speed_part1; // will get overwritten during setup
 
 
+float offset_angle = 0; // Depending of magnet position, stored in EEPROM
+
+// Slave receive point from master
 boolean new_point = false;
+unsigned long master_time;
+float master_angle;
 
-float diff_angle,diff_time, speed_feedback, diff_speed, diff_angle_master;
-
+// Global Variable of angle & timing
 unsigned long local_time, old_local_time;
-
-//bool microSwitchStateChange = false;
-
-// ######## FONCTION MODULO FLOAT ############
-float f_mod(float a, float n) {          
-  return a - n * floor(a / n);
-}
-
-
+float local_angle, old_local_angle;
+float old_speed_feedback;
 
 void setup() { 
   Serial.begin(115200);
@@ -86,7 +78,10 @@ void loop() {
   delay(5);
 }
 
-
+// ######## FONCTION MODULO FLOAT ############
+float f_mod(float a, float n) {          
+  return a - n * floor(a / n);
+}
 
 
 

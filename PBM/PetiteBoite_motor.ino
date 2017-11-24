@@ -3,7 +3,6 @@
 
 Motor M1(0x30, _MOTOR_A, 15000); //PWM frequency: 15 kHz
 
-
 void writeSpeed(float speed_to_write) {
 
 //  if (speed_to_write - motor_PWM_speed != 0) {
@@ -22,5 +21,4 @@ void writeSpeed(float speed_to_write) {
       M1.setmotor(_STOP);
     else
       M1.setmotor(_CW, motor_PWM_speed);
-//  }
 }

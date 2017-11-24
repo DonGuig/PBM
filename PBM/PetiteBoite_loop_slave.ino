@@ -12,16 +12,16 @@ void servoLoop() {
     getAngles();
 
     ///////// NEAR MASTER //////////
-    if (abs(diff_angle_master) <= 5) { // near master
+    if (abs(diff_angle_master()) <= 5) { // near master
 //        Serial.print("near_master ");
       if (!was_near) { // pour la premiere fois ?
-        writeSpeed(start_PWM_speed + diff_angle_master * 0.1);
+        writeSpeed(start_PWM_speed + diff_angle_master() * 0.1);
         was_near = true;   
       }
       else { 
-        if ((diff_angle > 0.05 && diff_angle < 5)) { // error mesurement or near 360
+        if ((diff_angle() > 0.05 && diff_angle() < 5)) { // error mesurement or near 360
 //          speed_step = (diff_angle_master * 0.15) + (1.2 * diff_speed); //diff_angle_master * 0.05;
-          speed_step = (diff_angle_master * 0.2) + (1 * diff_speed);
+          speed_step = (diff_angle_master() * 0.2) + (1 * diff_speed());
           if (speed_step >= 0.1)
             speed_step = 0.1;
           else if (speed_step <= -0.1)
@@ -38,17 +38,17 @@ void servoLoop() {
     } 
     /////// FAR MASTER /////////
     else {
-      diff_angle_master = f_mod(diff_angle_master, 720);
-      Serial.print("far_master ");
-      if (diff_angle_master < 300) { // au plus vite
-        Serial.print(" go fast  ");
+      Serial.print("far_master :");
+      if (f_mod(diff_angle_master(), 720) < 300) { // au plus vite
+        Serial.print(" go fast");
         writeSpeed(max_PWM_speed); 
       } 
-      else if (diff_angle_master > 390){ // stop
-        Serial.print(" go_slow  ");
+      else if (f_mod(diff_angle_master(), 720) > 390){ // stop
+        Serial.print(" go_slow");
         writeSpeed(0);
       }
       was_near = false;
+      Serial.println();
     }
 
 
