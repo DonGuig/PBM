@@ -8,25 +8,10 @@ void servoLoop() {
    if (diff_angle() > 0.1 && diff_angle() < 10 && abs(acceleration()) < 1.5) { // mesure error or near 360
     sendUdp("SYNC_POINT " + String(local_time) + " " + String(local_angle));   
     
-    if (speed_feedback() < goal_speed * 0.99) { //1%
-      if (speed_feedback() < goal_speed * 0.90) {
-/*        writeSpeed(motor_PWM_speed + 0.05);
-        Serial.println("BIG STEP+");
-      }
-*/
-      else {
+    if (speed_feedback() < goal_speed * 0.99) //1%
         writeSpeed(motor_PWM_speed + 0.01);
-      }
-    }
-    else if (speed_feedback() > goal_speed * 1.01) { // 1%
-      if (speed_feedback() > goal_speed * 1.10) { // 
-        writeSpeed(motor_PWM_speed - 0.05);
-        Serial.println("BIG STEP-");
-      }
-      else {
+    else if (speed_feedback() > goal_speed * 1.01)  // 1%
         writeSpeed(motor_PWM_speed - 0.01);
-      }
-    }    
   }    
   else {
     Serial.println("MESUREMENT ERROR");
