@@ -34,6 +34,6 @@ bool checkMicroSwitchState() {
     	}
 
 	old_microSwitchState = microSwitchState;
-	return microSwitchState;
 	}
+  return microSwitchState;
 }

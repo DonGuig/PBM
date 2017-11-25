@@ -23,7 +23,6 @@ float max_PWM_speed = 5;
 
 float goal_speed = goal_speed_part1; // will get overwritten during setup
 
-
 float offset_angle = 0; // Depending of magnet position, stored in EEPROM
 
 // Slave receive point from master
