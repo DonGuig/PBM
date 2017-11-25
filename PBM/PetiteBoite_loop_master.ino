@@ -16,28 +16,30 @@ void servoLoop() {
 
   }    
   else {
-    Serial.println("MESUREMENT ERROR");
+    Serial.print("MESUREMENT ERROR : ");
+    Serial.print("diff_angle ");Serial.print(diff_angle());
+    Serial.print(" acceleration ");Serial.print(acceleration());
+    Serial.println();
   }  
 
 // CSV FILE, interessant pour des tableaux/courbes
 //    Serial.print(local_time);Serial.print(";");Serial.print(diff_time);Serial.print(";");
-//  Serial.print(local_angle);Serial.print(";");Serial.print(diff_angle);Serial.print(";");
-//    Serial.print(speed_feedback);Serial.print(";");
-//    Serial.print(motor_PWM_speed);Serial.println(";");
+    Serial.print(local_angle);Serial.print(";");Serial.print(diff_angle());Serial.print(";");
+    Serial.print(speed_feedback());Serial.print(";");
+    Serial.print(motor_PWM_speed);Serial.println(";");
 
     // DEBUG
 //    Serial.print("angle "); Serial.print(local_angle);
 //        Serial.print(" old_local_angle "); Serial.print(old_local_angle);
-        Serial.print(" angle_diff ");Serial.print(diff_angle());
+//        Serial.print(" angle_diff ");Serial.print(diff_angle());
 //        Serial.print(" temps_diff ");Serial.print(diff_time);
-        Serial.print(" speed_feedback : ");Serial.print(speed_feedback());
-        Serial.print(" goal_speed ");Serial.print(goal_speed);
-        Serial.print(" acceleration ");Serial.print(abs(acceleration()));
-    Serial.print(" send speed : ");Serial.println(motor_PWM_speed);
+//        Serial.print(" speed_feedback : ");Serial.print(speed_feedback());
+//        Serial.print(" goal_speed ");Serial.print(goal_speed);
+//        Serial.print(" acceleration ");Serial.print(abs(acceleration()));
+//    Serial.print(" send speed : ");Serial.println(motor_PWM_speed);
 //    Serial.print(" voltage : ");Serial.println(batteryVoltage);
-  }
-  
   updateOldAngle();
+  }
 }
 
 #endif
