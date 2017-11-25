@@ -40,8 +40,8 @@ void getAngles() {
 //  delay(10);
 //  float angle = angleSensor.getMovingAvgExp(U_DEG);
 
-  float angle = round(10*angleSensor.angleR(U_DEG, true))/10.;
-  
+//  float angle = round(10*angleSensor.angleR(U_DEG, true))/10.;
+  float angle = angleSensor.angleR(U_DEG, true);
   local_time = sync_millis(); 
   
   // Selon etat microswitch
