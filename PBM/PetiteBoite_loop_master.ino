@@ -2,7 +2,7 @@
 #if MASTER == 1 // UNIQUEMENT POUR LE MASTER
 
 void servoLoop() {
-  if ((sync_millis() - old_local_time) > 150) { // boucle de temporisation principale            
+  if ((sync_millis() - old_local_time) > 250) { // boucle de temporisation principale            
     getAngles();
     
    if (diff_angle() > 0.1 && diff_angle() < 10 && abs(acceleration()) < 3) { // mesure error or near 360
@@ -11,31 +11,33 @@ void servoLoop() {
     
     if (speed_feedback() < goal_speed) {
       if (speed_feedback() < goal_speed * 0.85) {
-        writeSpeed(motor_PWM_speed + 0.1);
+        writeSpeed(motor_PWM_speed + 0.08);
       }
       else if (speed_feedback() < goal_speed * 0.90) {
-        writeSpeed(motor_PWM_speed + 0.075);
+        writeSpeed(motor_PWM_speed + 0.05);
       }
       else if (speed_feedback() < goal_speed * 0.95) {
-        writeSpeed(motor_PWM_speed + 0.05);
+        writeSpeed(motor_PWM_speed + 0.03);
       }
       else
         writeSpeed(motor_PWM_speed + 0.01);
     }  
     else if (speed_feedback() > goal_speed) {
       if (speed_feedback() > goal_speed * 1.15) {
-        writeSpeed(motor_PWM_speed - 0.1);
+        writeSpeed(motor_PWM_speed - 0.08);
       }
       else if (speed_feedback() > goal_speed * 1.10) {
-        writeSpeed(motor_PWM_speed - 0.075);
+        writeSpeed(motor_PWM_speed - 0.05);
       }
       else if (speed_feedback() > goal_speed * 1.05) {
-        writeSpeed(motor_PWM_speed - 0.05);
+        writeSpeed(motor_PWM_speed - 0.03);
       }
       else 
         writeSpeed(motor_PWM_speed - 0.01);
     }
+    
   }    
+
   else {
     Serial.print("MESUREMENT ERROR : ");
     Serial.print("diff_angle ");Serial.print(diff_angle());
@@ -45,6 +47,7 @@ void servoLoop() {
 
 // CSV FILE, interessant pour des tableaux/courbes
 //    Serial.print(local_time);Serial.print(";");Serial.print(diff_time);Serial.print(";");
+    Serial.print(goal_speed);Serial.print(";");
     Serial.print(local_angle);Serial.print(";");Serial.print(diff_angle());Serial.print(";");
     Serial.print(speed_feedback());Serial.print(";");
     Serial.print(motor_PWM_speed);Serial.println(";");
