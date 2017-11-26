@@ -42,7 +42,7 @@ void getAngles() {
 
 //  float angle = round(10*angleSensor.angleR(U_DEG, true))/10.;
   float angle = angleSensor.angleR(U_DEG, true);
-  local_time = sync_millis(); 
+  local_time = sync_millis();
   
   // Selon etat microswitch
   if (checkMicroSwitchState() == HIGH) { // 0 - 360°, relaché
@@ -60,11 +60,17 @@ void getAngles() {
 }
 
 float diff_angle() {
-  return local_angle - old_local_angle; // at normal speed near 0.8
+  return local_angle - old_local_angle;
 }
+
+
 
 unsigned int diff_time() {
   return local_time - old_local_time;
+}
+
+float diff_speed() {
+  return (goal_speed - speed_feedback());
 }
 
 float speed_feedback() { // °.s-1
@@ -85,15 +91,15 @@ void updateOldAngle() {
 float diff_angle_master() {
   float a = (local_angle - old_local_angle)/(local_time - old_local_time);
   float b = local_angle - a*local_time;
-  float local_angle_at_master_time = f_mod(a*master_time + b, 720);
+  float local_angle_at_master_time = f_mod(a * master_time + b, 720);
   
   return master_angle - local_angle_at_master_time;  
 }
 
-float diff_speed() {
-  return 0.1 * (goal_speed - speed_feedback());
-}
 #endif
+
+
+
 
 
 

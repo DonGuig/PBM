@@ -14,6 +14,7 @@
 bool slave_sync = false;
 long t1, t1p, t2, t2p, slave_clock_offset, master_to_slave_delay;
 
+
 // millis() avec offset !
 unsigned long sync_millis() {
 #if MASTER==0
@@ -31,7 +32,6 @@ void slave_ask_for_resync() { // Appel du slave au master
     receiveUdp();
   }
   // slave_sync = false;
-  Serial.print(" SYNC_MILLIS ");Serial.println(sync_millis());
 }
 
 // FONCTIONS APPELÉ PAR UDP_RECEIVE DANS WIFI
