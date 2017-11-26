@@ -73,7 +73,7 @@ void routeUdp() {
   receive_master_isSync(strAddress); //ptp
   receive_master_t1pt2(strAddress); //ptp
 #else
-  receive_slave_offset(strAddress); //ptp
+  receive_slave_clock_offset(strAddress); //ptp
   receive_slave_t1(strAddress); //ptp
   receive_slave_syncPoint(strAddress); // dans petiteBoite_angle
 #endif
@@ -93,6 +93,7 @@ void sendUdp(char Content[]) {
 }
 
 void receiveUdp() {
+  Udp.flush(); // we only want to receive the next arriving packet, not old ones in the buffer
   memset(incomingPacket, 0, 255);
   int packetSize = Udp.parsePacket();
   if (packetSize) {
@@ -106,10 +107,15 @@ void receiveUdp() {
     delay(1);
 }
 
+void send_master_sync_point() {
+  sendUdp("SYNC_POINT " + String(local_time) + " " + String(local_angle)+ " " + String(speed_feedback()));
+}
+
 void receive_slave_syncPoint(char* strAddress){
   if (strcmp(strAddress,"SYNC_POINT") == 0) {
     master_time = strtoul(strtok(NULL, " "), NULL, 0);
     master_angle = strtod(strtok(NULL, " "), NULL);
+    master_speed = strtod(strtok(NULL, " "), NULL);
     new_point = true;
   }
 }
