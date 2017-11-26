@@ -10,11 +10,11 @@
 
 #if (MASTER == 1)
   float goal_speed_part1 = 10.05; //°.s-1  (OLD : 9.78)
-  float goal_speed_part2 = 12.00;
+  float goal_speed_part2 = 11.22;
 // If it has no use, we will need to delete the #if MASTER statement to have same values for master + slave
 #else
   float goal_speed_part1 = 10.05;
-  float goal_speed_part2 = 12.00;
+  float goal_speed_part2 = 11.22;
 #endif
 
 // Angle & Speed Variable
