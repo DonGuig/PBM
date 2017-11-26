@@ -1,5 +1,5 @@
 // SELECTION MASTER or SLAVE
-#define MASTER 1
+#define MASTER 0
 /*
  * ELECTRONIC CONNECTION :
  * 
@@ -28,7 +28,7 @@ float offset_angle = 0; // Depending of magnet position, stored in EEPROM
 // Slave receive point from master
 boolean new_point = false;
 unsigned long master_time;
-float master_angle;
+float master_angle, master_speed;
 
 // Global Variable of angle & timing
 unsigned long local_time, old_local_time;
@@ -55,8 +55,9 @@ void setup() {
   setupOTA();
 
   setupUdp();
+
   #if MASTER == 0
-  re_sync();
+  slave_ask_for_resync();
   #endif
   
   writeSpeed(start_PWM_speed);

@@ -6,7 +6,7 @@ void servoLoop() {
     getAngles();
     
    if (diff_angle() > 0.1 && diff_angle() < 10 && abs(acceleration()) < 3) { // mesure error or near 360
-    sendUdp("SYNC_POINT " + String(local_time) + " " + String(local_angle));   
+    send_master_sync_point();   
     
     
     if (speed_feedback() < goal_speed) {

@@ -25,7 +25,7 @@ bool checkMicroSwitchState() {
 
     		#if MASTER == 0        
       		checkWifi();
-          re_sync();
+          slave_ask_for_resync();
       	#endif
     	}
     	else { // we're entering part2

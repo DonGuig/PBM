@@ -21,7 +21,7 @@ void servoLoop() {
       else { 
         if ((diff_angle() > 0.05 && diff_angle() < 5)) { // error mesurement or near 360
 //          speed_step = (diff_angle_master * 0.15) + (1.2 * diff_speed); //diff_angle_master * 0.05;
-          speed_step = (diff_angle_master() * 0.2) + (1 * diff_speed());
+          speed_step = (diff_angle_master() * 0.2) + (0.1 * diff_speed());
           if (speed_step >= 0.1)
             speed_step = 0.1;
           else if (speed_step <= -0.1)
@@ -66,6 +66,12 @@ void servoLoop() {
 //     Serial.print(" master_feed ");Serial.println(master_speed_feedback*1000);
 //     Serial.print(" angle_diff ");Serial.print(diff_angle);
 //    Serial.print(" voltage : ");Serial.println(batteryVoltage);
+
+    Serial.print(local_angle);Serial.print(";");
+    Serial.print(diff_speed());Serial.print(";");
+    Serial.print(speed_feedback());Serial.print(";");
+    Serial.print(diff_angle_master());Serial.print(";");
+    Serial.print(motor_PWM_speed);Serial.println(";");
 
     new_point = false; 
   }
