@@ -27,9 +27,15 @@ unsigned long sync_millis() {
 void slave_ask_for_resync() { // Appel du slave au master 
   Serial.println("RESYNC");
   slave_sync = false;
-  while (!slave_sync) {
-    sendUdp("RESYNC"); // we want to keep asking in case the first request got lost
+  sendUdp("RESYNC"); // we want to keep asking in case the first request got lost
+  int i = 0;
+  while (!slave_sync) {    
     receiveUdp();
+    if (i > 10000) { // Timeout to send resync
+      sendUdp("RESYNC");
+      i = 0;
+    }
+    i++;
   }
   // slave_sync = false;
 }
