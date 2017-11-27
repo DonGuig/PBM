@@ -8,14 +8,8 @@
  * Battery Input : GND --> 220 Ohms --> A0 <-- 1000 Ohms <-- Battery
 */
 
-#if (MASTER == 1)
-  float goal_speed_part1 = 10.05; //°.s-1  (OLD : 9.78)
-  float goal_speed_part2 = 11.22;
-// If it has no use, we will need to delete the #if MASTER statement to have same values for master + slave
-#else
-  float goal_speed_part1 = 10.05;
-  float goal_speed_part2 = 11.22;
-#endif
+float goal_speed_part1 = 10.05; //°.s-1  (OLD : 9.78)
+float goal_speed_part2 = 11.22;
 
 // Angle & Speed Variable
 float start_PWM_speed = 2.884, motor_PWM_speed = start_PWM_speed; // init PWM (0-100)
@@ -47,10 +41,10 @@ void setup() {
   setupWifi();
   
   setupEeprom();
+
+  setupMicroSwitch();
   
   setupAngle();
-
-  setupGoalSpeed();
 
 //  setupOTA();
 
@@ -69,7 +63,7 @@ void loop() {
   
   receiveUdp(); // UDP INPUT 
   
-  readBattery();  
+//  readBattery();  // CRASH WIFI - not use
 
 //  ota();
   
