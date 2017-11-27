@@ -52,7 +52,7 @@ void setup() {
 
   setupGoalSpeed();
 
-  setupOTA();
+//  setupOTA();
 
   setupUdp();
 
@@ -71,11 +71,11 @@ void loop() {
   
   readBattery();  
 
-  ota();
+//  ota();
   
   servoLoop(); //loops_slave OR loop_master
 
-  delay(5);
+//  delay(5);
 }
 
 // ######## FONCTION MODULO FLOAT ############

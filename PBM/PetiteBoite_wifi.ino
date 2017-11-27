@@ -38,10 +38,18 @@ void setupWifi() {
 
   Serial.println("*** SLAVE ***");
   Serial.print("Connecting to ");Serial.println(ssid);
-  WiFi.mode(WIFI_STA);
-  WiFi.config(local_IP, gateway, subnet);WiFi.mode(WIFI_STA);WiFi.begin(ssid, password);      
-//  while (WiFi.status() != WL_CONNECTED) {delay(500);Serial.print(".");}
-  while (WiFi.waitForConnectResult() != WL_CONNECTED) {Serial.println("Connection Failed! Rebooting...");delay(5000);ESP.restart();}
+  WiFi.config(local_IP, gateway, subnet);WiFi.mode(WIFI_STA);WiFi.begin(ssid, password);    
+//  while (WiFi.status() != WL_CONNECTED) {delay(500);Serial.print(".");}WiFi.waitForConnectResult()
+  int i = 0 ;
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+    if (i > 10) {
+      Serial.println("Connection Failed! Rebooting...");
+      ESP.restart();
+    }
+    i++;
+  }
   Serial.println("");Serial.println("WiFi connected");
  
 #endif
@@ -81,19 +89,16 @@ void routeUdp() {
 
 void sendUdp(String Content) {
 //  Serial.print("SENDUDP : ");Serial.println(Content);
-  char reponse_char[255];
-  Content.toCharArray(reponse_char, 255);
-  sendUdp(reponse_char); 
+  char content_char[255];
+  Content.toCharArray(content_char, 255);
+  Udp.beginPacket(remote_IP, remoteUdpPort);
+  Udp.write(content_char);
+  Udp.endPacket(); 
 }
 
-void sendUdp(char Content[]) {
-  Udp.beginPacket(remote_IP, remoteUdpPort);
-  Udp.write(Content);
-  Udp.endPacket();
-}
 
 void receiveUdp() {
-  Udp.flush(); // we only want to receive the next arriving packet, not old ones in the buffer
+//  Udp.flush(); // we only want to receive the next arriving packet, not old ones in the buffer
   memset(incomingPacket, 0, 255);
   int packetSize = Udp.parsePacket();
   if (packetSize) {
