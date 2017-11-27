@@ -44,13 +44,13 @@ void setup() {
   
   Serial.println("");Serial.println("########## START Petite Boite Musique #########");
 
+  setupWifi();
+  
   setupEeprom();
   
   setupAngle();
 
   setupGoalSpeed();
-
-  setupWifi();
 
   setupOTA();
 
