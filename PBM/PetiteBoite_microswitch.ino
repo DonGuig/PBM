@@ -4,13 +4,11 @@ bool microSwitchState = LOW;
 bool old_microSwitchState = LOW;
 
 void setupMicroSwitch() {
-	  pinMode(microSwitchPin, INPUT);
-	  microSwitchState = digitalRead(microSwitchPin);
-	  old_microSwitchState = microSwitchState;
-    if (microSwitchState == HIGH)
-      goal_speed = goal_speed_part1;
-    else 
-      goal_speed = goal_speed_part2;
+  pinMode(microSwitchPin, INPUT);
+  microSwitchState = digitalRead(microSwitchPin);
+  old_microSwitchState = microSwitchState;
+  if (microSwitchState == HIGH) { goal_speed = goal_speed_part1; }
+  else { goal_speed = goal_speed_part2; }
 }
 
 bool checkMicroSwitchState() {
