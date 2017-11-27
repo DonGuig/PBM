@@ -59,13 +59,16 @@ void setupWifi() {
 }
 
 #if MASTER == 0
-void checkWifi() {
+bool checkWifi() {
+  bool wifi_statut = false;
   if (WiFi.status() != WL_CONNECTED) {
     Serial.println("disconnected");
     while (WiFi.waitForConnectResult() != WL_CONNECTED) {Serial.println("Connection Failed! Rebooting...");delay(5000);ESP.restart();}
   }
-  else
+  else {
     Serial.println("Still Connected");
+    wifi_statut = true;
+  }
 }
 #endif
 

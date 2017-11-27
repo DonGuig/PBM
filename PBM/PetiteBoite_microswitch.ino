@@ -26,8 +26,8 @@ bool checkMicroSwitchState() {
     		goal_speed = goal_speed_part1;
 
     		#if MASTER == 0        
-      		checkWifi();
-          slave_ask_for_resync();
+      		if(!checkWifi())
+      		  slave_ask_for_resync();        
       	#endif
     	}
     	else { // we're entering part2
