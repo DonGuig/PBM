@@ -39,11 +39,11 @@ void servoLoop() {
     /////// FAR MASTER /////////
     else {
       Serial.print("far_master :");
-      if (f_mod(diff_angle_master(), 720) < 300) { // au plus vite
+      if (diff_angle_master() > 0) { // au plus vite
         Serial.print(" go fast");
         writeSpeed(max_PWM_speed); 
       } 
-      else if (f_mod(diff_angle_master(), 720) > 390){ // stop
+      else { // stop
         Serial.print(" go_slow");
         writeSpeed(0);
       }

@@ -1,5 +1,5 @@
 // SELECTION MASTER or SLAVE
-#define MASTER 0
+#define MASTER 1
 /*
  * ELECTRONIC CONNECTION :
  * 

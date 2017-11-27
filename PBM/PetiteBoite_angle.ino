@@ -92,10 +92,12 @@ float diff_angle_master() {
   float a = (local_angle - old_local_angle)/(local_time - old_local_time);
   float b = local_angle - a*local_time;
   float local_angle_at_master_time = f_mod(a * master_time + b, 720);
-  
-  return master_angle - local_angle_at_master_time;  
-}
 
+  float diff = master_angle - local_angle_at_master_time;
+  if (diff < -360) diff += 720;
+  else if (diff > 360) diff -= 720;
+  return diff;
+}
 #endif
 
 
