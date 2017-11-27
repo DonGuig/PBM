@@ -34,7 +34,7 @@ void changeOffset() {
 }
 
 
-void getAngles() {
+void getAngle() {
 //  delay(10);
 //  angleSensor.updateMovingAvgExp();
 //  delay(10);
@@ -98,6 +98,8 @@ float diff_angle_master() {
   else if (diff > 360) diff -= 720;
   return diff;
 }
+
+
 #endif
 
 

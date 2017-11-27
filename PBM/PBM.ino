@@ -1,5 +1,6 @@
 // SELECTION MASTER or SLAVE
 #define MASTER 0
+
 /*
  * ELECTRONIC CONNECTION :
  * 
@@ -68,6 +69,9 @@ void loop() {
 //  ota();
   
   servoLoop(); //loops_slave OR loop_master
+  #if MASTER == 1
+  syncPointLoop();
+  #endif
 
 //  delay(5);
 }

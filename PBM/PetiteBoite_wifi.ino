@@ -115,15 +115,14 @@ void receiveUdp() {
     delay(1);
 }
 
-void send_master_sync_point() {
-  sendUdp("SYNC_POINT " + String(local_time) + " " + String(local_angle)+ " " + String(speed_feedback()));
+void send_master_sync_point(unsigned long loc_time, float loc_angle) {
+  sendUdp("SYNC_POINT " + String(loc_time) + " " + String(loc_angle));
 }
 
 void receive_slave_syncPoint(char* strAddress){
   if (strcmp(strAddress,"SYNC_POINT") == 0) {
     master_time = strtoul(strtok(NULL, " "), NULL, 0);
     master_angle = strtod(strtok(NULL, " "), NULL);
-    master_speed = strtod(strtok(NULL, " "), NULL);
     new_point = true;
   }
 }

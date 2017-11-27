@@ -8,8 +8,7 @@ float was_near = false;
 
 void servoLoop() {
   if (new_point) {
-    
-    getAngles();
+    getAngle();
 
     ///////// NEAR MASTER //////////
     if (abs(diff_angle_master()) <= 5) { // near master
@@ -21,7 +20,13 @@ void servoLoop() {
       else { 
         if ((diff_angle() > 0.05 && diff_angle() < 5)) { // error mesurement or near 360
 //          speed_step = (diff_angle_master * 0.15) + (1.2 * diff_speed); //diff_angle_master * 0.05;
-          speed_step = (diff_angle_master() * 0.5) + (0.5 * diff_speed());
+
+          if (abs(diff_angle_master()) < 1) {
+            speed_step = servo_speed_step() + 0.06 *diff_angle_master();
+          }
+          else 
+            speed_step = (diff_angle_master() * 0.3) + 0.7*diff_speed();
+            
           if (speed_step >= max_speed_step) {
             Serial.println("MAXstep");          
             speed_step = max_speed_step;
@@ -63,28 +68,61 @@ void servoLoop() {
     // DEBUG
 //    Serial.print(" angle ");Serial.print(local_angle);
     
-    Serial.print("angle_diff: ");Serial.print(diff_angle_master());
-    Serial.print(" speed_diff: ");Serial.print(diff_speed());
+//    
+    
 //    Serial.print(" angle_diff_coef: ");Serial.print(10*diff_angle_master*0.2);
 //    Serial.print(" speed_diff_coef: ");Serial.print(10*diff_speed*1);
 //    Serial.print(" step: ");Serial.print(speed_step);
-    Serial.print(" speedPWM: ");Serial.print(motor_PWM_speed);
+//    Serial.print(" speedPWM: ");Serial.print(motor_PWM_speed);
+//    Serial.print(" speed_diff: ");Serial.print(diff_speed());
+//    Serial.print("angle_diff: ");Serial.print(diff_angle_master());
 //    Serial.print(" angle: ");Serial.print(local_angle);
 //    Serial.print("angle_master: ");Serial.print(master_angle);
-     Serial.print(" speed_feed ");Serial.print(speed_feedback());
+//     Serial.print(" speed_feed ");Serial.print(speed_feedback());
 //     Serial.print(" master_feed ");Serial.println(master_speed_feedback*1000);
 //     Serial.print(" angle_diff ");Serial.print(diff_angle);
 //    Serial.print(" voltage : ");Serial.print(batteryVoltage);
 
-//    Serial.print(local_angle);Serial.print(";");
-//    Serial.print(diff_speed());Serial.print(";");
+    Serial.print(local_angle);Serial.print(";");
+    Serial.print(diff_speed());Serial.print(";");
 //    Serial.print(speed_feedback());Serial.print(";");
-//    Serial.print(diff_angle_master());Serial.print(";");
+    Serial.print(diff_angle_master());Serial.print(";");
 //    Serial.print(motor_PWM_speed);Serial.print(";");
 
     Serial.println();
     new_point = false; 
     updateOldAngle();
   }
+}
+
+float servo_speed_step() {
+  float servo_step = 0;
+  if (speed_feedback() < goal_speed) {
+      if (speed_feedback() < goal_speed * 0.85) {
+        servo_step = 0.08;
+      }
+      else if (speed_feedback() < goal_speed * 0.90) {
+        servo_step = 0.05;
+      }
+      else if (speed_feedback() < goal_speed * 0.95) {
+        servo_step = 0.03;
+      }
+      else
+        servo_step = 0.01;
+    }  
+    else if (speed_feedback() > goal_speed) {
+      if (speed_feedback() > goal_speed * 1.15) {
+        servo_step = -0.08;
+      }
+      else if (speed_feedback() > goal_speed * 1.10) {
+        servo_step = -0.05;
+      }
+      else if (speed_feedback() > goal_speed * 1.05) {
+        servo_step = -0.03;
+      }
+      else 
+        servo_step = -0.01;
+    }
+    return servo_step;
 }
 #endif
