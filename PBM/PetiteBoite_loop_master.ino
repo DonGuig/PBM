@@ -1,11 +1,18 @@
 // fonction de synchro locale + Envoi de la position au slave.
 #if MASTER == 1 // UNIQUEMENT POUR LE MASTER
+
 unsigned long old_local_time_for_udp;
+unsigned long refresh_time_for_udp = 250;
 void syncPointLoop(){
-  if ((sync_millis() - old_local_time_for_udp) > 250) {
+  if ((sync_millis() - old_local_time_for_udp) > refresh_time_for_udp) {
     getAngle();
     send_master_sync_point(local_time, local_angle); 
     old_local_time_for_udp = sync_millis();
+    if (local_angle < 5) {
+      refresh_time_for_udp = 50;
+    }
+    else
+      refresh_time_for_udp = 250;
   }
 }
 

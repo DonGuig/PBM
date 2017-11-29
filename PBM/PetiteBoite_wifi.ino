@@ -53,6 +53,7 @@ void setupWifi() {
   Serial.println("");Serial.println("WiFi connected");
  
 #endif
+  WiFi.setOutputPower(0);
   Serial.println("WIFI SETUP INFORMATION");
   WiFi.printDiag(Serial);
   Serial.println("END WIFI SETUP INFORMATION");

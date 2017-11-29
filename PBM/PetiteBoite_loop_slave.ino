@@ -18,11 +18,11 @@ void servoLoop() {
         was_near = true;   
       }
       else { 
-        if ((diff_angle() > 0.05 && diff_angle() < 5)) { // error mesurement or near 360
+        if ((diff_angle() > 0.05 && diff_angle() < 5) && abs(speed_feedback()) < 20) { // error mesurement or near 360
 //          speed_step = (diff_angle_master * 0.15) + (1.2 * diff_speed); //diff_angle_master * 0.05;
 
           if (abs(diff_angle_master()) < 1) {
-            speed_step = servo_speed_step() + 0.06 *diff_angle_master();
+            speed_step = servo_speed_step() + 0.05 * diff_angle_master(); //optimal 2* + 0.2*
           }
           else 
             speed_step = (diff_angle_master() * 0.3) + 0.7*diff_speed();
@@ -35,6 +35,9 @@ void servoLoop() {
             Serial.println("MINstep");
             speed_step = -max_speed_step;         
           }
+          Serial.print(speed_step);Serial.print(";");
+          Serial.print(servo_speed_step());Serial.print(";");
+          
           writeSpeed(motor_PWM_speed + speed_step);
           if (motor_PWM_speed < 0.5) { // TOO SLOW
             Serial.println("MIN ");
@@ -99,29 +102,35 @@ float servo_speed_step() {
   float servo_step = 0;
   if (speed_feedback() < goal_speed) {
       if (speed_feedback() < goal_speed * 0.85) {
-        servo_step = 0.08;
+        servo_step = 0.15;
       }
       else if (speed_feedback() < goal_speed * 0.90) {
-        servo_step = 0.05;
+        servo_step = 0.10;
       }
       else if (speed_feedback() < goal_speed * 0.95) {
-        servo_step = 0.03;
+        servo_step = 0.08;
+      }
+      else if (speed_feedback() < goal_speed * 0.975) {
+        servo_step = 0.04;
       }
       else
-        servo_step = 0.01;
+        servo_step = 0.02;
     }  
     else if (speed_feedback() > goal_speed) {
       if (speed_feedback() > goal_speed * 1.15) {
-        servo_step = -0.08;
+        servo_step = -0.15;
       }
       else if (speed_feedback() > goal_speed * 1.10) {
-        servo_step = -0.05;
+        servo_step = -0.10;
       }
       else if (speed_feedback() > goal_speed * 1.05) {
-        servo_step = -0.03;
+        servo_step = -0.08;
+      }
+      else if (speed_feedback() > goal_speed * 1.025) {
+        servo_step = -0.04;
       }
       else 
-        servo_step = -0.01;
+        servo_step = -0.02;
     }
     return servo_step;
 }
