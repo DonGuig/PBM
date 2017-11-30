@@ -1,5 +1,5 @@
 // SELECTION MASTER or SLAVE
-#define MASTER 0
+#define MASTER 1
 
 /*
  * ELECTRONIC CONNECTION :
@@ -29,6 +29,13 @@ float master_angle, master_speed;
 unsigned long local_time, old_local_time;
 float local_angle, old_local_angle;
 float old_speed_feedback;
+
+// Global variables for measurement only
+unsigned long measurement_time, old_measurement_time;
+float measurement_angle, old_measurement_angle;
+float measurement_speed_feedback, old_measurement_speed_feedback;
+float measurement_diff_angle;
+float measurement_acceleration;
 
 void setup() { 
   Serial.begin(115200);

@@ -33,6 +33,35 @@ void changeOffset() {
     offset_angle = 360 - angleSensor.angleR(U_DEG, true) - 3; //-3 = SAFETY        
 }
 
+void measureAngle() {
+  // This is only used for measurement and does not use the same variables as getAngle()
+  float angle = angleSensor.angleR(U_DEG, true);
+  measurement_time = sync_millis();
+
+  if (checkMicroSwitchState() == HIGH) { // 0 - 360°, relaché
+    if (old_measurement_angle > 700) // Zone d'erreur, pour régler la transition 720° -> 0°
+      measurement_angle = f_mod(angle + offset_angle + 360, 720);
+    else 
+      measurement_angle = f_mod(angle + offset_angle, 360);
+  }
+  else { // 361 - 720°
+    if (old_local_angle < 360) // Zone d'erreur, pour régler la transition 359° -> 361°
+      measurement_angle = angle + offset_angle;
+    else 
+      measurement_angle = f_mod(angle + offset_angle, 360) + 360;
+  }
+
+  measurement_diff_angle = measurement_angle - old_measurement_angle;
+
+  measurement_speed_feedback = 1000. * measurement_diff_angle / (measurement_time - old_measurement_time);
+
+  measurement_acceleration = 1000. * (measurement_speed_feedback - old_measurement_speed_feedback) / (measurement_time - old_measurement_time);
+
+  old_measurement_time = measurement_time;
+  old_measurement_speed_feedback = measurement_speed_feedback;
+  old_measurement_angle = measurement_angle;
+}
+
 
 void getAngle() {
 //  delay(10);
@@ -78,7 +107,7 @@ float speed_feedback() { // °.s-1
 }
 
 float acceleration() {
-  return speed_feedback() - old_speed_feedback;
+  return 1000 * (speed_feedback() - old_speed_feedback)/(local_time - old_local_time);
 }
 
 void updateOldAngle() {

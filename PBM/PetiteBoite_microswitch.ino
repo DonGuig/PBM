@@ -23,6 +23,10 @@ bool checkMicroSwitchState() {
         updateEeprom();
 
     		writeSpeed(motor_PWM_speed*(goal_speed_part1/goal_speed_part2));
+        /// #####################
+        // The delay is there to let the motor get to speed before the next measurement
+        /// #####################
+        delay(500);
     		goal_speed = goal_speed_part1;
 
     		#if MASTER == 0        
@@ -32,6 +36,10 @@ bool checkMicroSwitchState() {
     	}
     	else { // we're entering part2
     		writeSpeed(motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
+        /// #####################
+        // The delay is there to let the motor get to speed before the next measurement
+        /// #####################
+        delay(500);
     		goal_speed = goal_speed_part2;
     	}
 
