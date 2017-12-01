@@ -42,8 +42,11 @@ bool checkMicroSwitchState() {
         delay(500);
     		goal_speed = goal_speed_part2;
     	}
+      
+  // At switch change, we need the average to start fresh
+    setup_speed_array(speed_fb_array, speed_avg_length, goal_speed);
 
-	old_microSwitchState = microSwitchState;
+    old_microSwitchState = microSwitchState;
 	}
   return microSwitchState;
 }

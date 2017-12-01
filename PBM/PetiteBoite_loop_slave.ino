@@ -22,7 +22,7 @@ void servoLoop() {
 //          speed_step = (diff_angle_master * 0.15) + (1.2 * diff_speed); //diff_angle_master * 0.05;
 
           if (abs(diff_angle_master()) < 1) {
-            speed_step = servo_speed_step() + 0.05 * diff_angle_master(); //optimal 2* + 0.2*
+            speed_step = 1 * ((1 - 0.05) * servo_speed_step() + 0.05 * diff_angle_master()); //optimal 2* + 0.2*
           }
           else 
             speed_step = (diff_angle_master() * 0.3) + 0.7*diff_speed();
@@ -35,8 +35,8 @@ void servoLoop() {
             Serial.println("MINstep");
             speed_step = -max_speed_step;         
           }
-          Serial.print(speed_step);Serial.print(";");
-          Serial.print(servo_speed_step());Serial.print(";");
+          //Serial.print(speed_step);Serial.print(" ");
+          //Serial.print(servo_speed_step());Serial.print(" ");
           
           writeSpeed(motor_PWM_speed + speed_step);
           if (motor_PWM_speed < 0.5) { // TOO SLOW
@@ -86,10 +86,10 @@ void servoLoop() {
 //     Serial.print(" angle_diff ");Serial.print(diff_angle);
 //    Serial.print(" voltage : ");Serial.print(batteryVoltage);
 
-    Serial.print(local_angle);Serial.print(";");
-    Serial.print(diff_speed());Serial.print(";");
+    //Serial.print(local_angle);Serial.print(" ");
+    Serial.print(diff_speed());Serial.print(" ");
 //    Serial.print(speed_feedback());Serial.print(";");
-    Serial.print(diff_angle_master());Serial.print(";");
+    Serial.print(diff_angle_master());Serial.print(" ");
 //    Serial.print(motor_PWM_speed);Serial.print(";");
 
     Serial.println();

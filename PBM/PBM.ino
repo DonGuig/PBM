@@ -37,6 +37,10 @@ float measurement_speed_feedback, old_measurement_speed_feedback;
 float measurement_diff_angle;
 float measurement_acceleration;
 
+// Used to have an sliding window averaging of speed_feedback values
+const int speed_avg_length = 1;
+float speed_fb_array[speed_avg_length];
+
 void setup() { 
   Serial.begin(115200);
 
@@ -53,6 +57,8 @@ void setup() {
   setupMicroSwitch();
   
   setupAngle();
+
+  setup_speed_array(speed_fb_array, speed_avg_length, goal_speed);
 
 //  setupOTA();
 
