@@ -19,7 +19,7 @@ void getFirstAngle() {
 //  angleSensor.updateMovingAvgExp();delay(100);
 //  angleSensor.updateMovingAvgExp();delay(1);
 
-  if (checkMicroSwitchState() == LOW) {
+  if (simpleCheckMicroSwitch() == LOW) {
     local_angle = f_mod(angleSensor.angleR(U_DEG, true) + offset_angle + 360, 720);
   }
   else {
@@ -38,7 +38,7 @@ void measureAngle() {
   float angle = angleSensor.angleR(U_DEG, true);
   measurement_time = sync_millis();
 
-  if (checkMicroSwitchState() == HIGH) { // 0 - 360°, relaché
+  if (simpleCheckMicroSwitch() == HIGH) { // 0 - 360°, relaché
     if (old_measurement_angle > 700) // Zone d'erreur, pour régler la transition 720° -> 0°
       measurement_angle = f_mod(angle + offset_angle + 360, 720);
     else 
@@ -74,7 +74,7 @@ void getAngle() {
   local_time = sync_millis();
   
   // Selon etat microswitch
-  if (checkMicroSwitchState() == HIGH) { // 0 - 360°, relaché
+  if (simpleCheckMicroSwitch() == HIGH) { // 0 - 360°, relaché
     if (old_local_angle > 700) // Zone d'erreur, pour régler la transition 720° -> 0°
       local_angle = f_mod(angle + offset_angle + 360, 720);
     else 

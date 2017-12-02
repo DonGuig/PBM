@@ -38,8 +38,12 @@ float measurement_diff_angle;
 float measurement_acceleration;
 
 // Used to have an sliding window averaging of speed_feedback values
-const int speed_avg_length = 1;
+const int speed_avg_length = 15;
 float speed_fb_array[speed_avg_length];
+
+// statistical values that get computed
+float next_speed = goal_speed_part1;
+float statistical_slope = 0.0; // close to acceleration, but calculated statistically
 
 void setup() { 
   Serial.begin(115200);
@@ -60,6 +64,8 @@ void setup() {
 
   setup_speed_array(speed_fb_array, speed_avg_length, goal_speed);
 
+  next_speed = goal_speed;
+
 //  setupOTA();
 
   setupUdp();
@@ -73,7 +79,7 @@ void setup() {
 
 
 void loop() {
-  checkMicroSwitchState();
+  checkAndUpdateMicroSwitchState();
   
   receiveUdp(); // UDP INPUT 
   

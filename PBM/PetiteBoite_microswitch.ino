@@ -11,7 +11,11 @@ void setupMicroSwitch() {
   else { goal_speed = goal_speed_part2; }
 }
 
-bool checkMicroSwitchState() {
+bool simpleCheckMicroSwitch() {
+  return digitalRead(microSwitchPin);
+}
+
+bool checkAndUpdateMicroSwitchState() {
 	microSwitchState = digitalRead(microSwitchPin);
 
 // HERE WE SHOULD PUT EVERYTHING THAT HAS TO HAPPEN WHEN THE MICROSWITCH CHANGES STATE !!!!
@@ -42,11 +46,17 @@ bool checkMicroSwitchState() {
         delay(500);
     		goal_speed = goal_speed_part2;
     	}
-      
-  // At switch change, we need the average to start fresh
+
+    // At switch change, we need the average to start fresh
+    //Serial.println("about to refresh speed_fb_array");
     setup_speed_array(speed_fb_array, speed_avg_length, goal_speed);
+    //print_array(speed_fb_array, speed_avg_length);
 
     old_microSwitchState = microSwitchState;
+
+    // we refresh the measurements for them to make sense next time they get called
+    getAngle();
+    updateOldAngle();
 	}
   return microSwitchState;
 }
