@@ -27,6 +27,7 @@ bool checkAndUpdateMicroSwitchState() {
         updateEeprom();
 
     		writeSpeed(motor_PWM_speed*(goal_speed_part1/goal_speed_part2));
+        //setup_array(PWM_array, PWM_avg_length, motor_PWM_speed*(goal_speed_part1/goal_speed_part2));
         /// #####################
         // The delay is there to let the motor get to speed before the next measurement
         /// #####################
@@ -40,6 +41,7 @@ bool checkAndUpdateMicroSwitchState() {
     	}
     	else { // we're entering part2
     		writeSpeed(motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
+        //setup_array(PWM_array, PWM_avg_length, motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
         /// #####################
         // The delay is there to let the motor get to speed before the next measurement
         /// #####################
@@ -49,8 +51,11 @@ bool checkAndUpdateMicroSwitchState() {
 
     // At switch change, we need the average to start fresh
     //Serial.println("about to refresh speed_fb_array");
-    setup_speed_array(speed_fb_array, speed_avg_length, goal_speed);
+    setup_array(speed_fb_array, speed_avg_length, goal_speed);
     //print_array(speed_fb_array, speed_avg_length);
+
+    servoPID.SetMode(MANUAL);
+    servoPID.SetMode(AUTOMATIC);
 
     old_microSwitchState = microSwitchState;
 

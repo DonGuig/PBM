@@ -9,14 +9,17 @@
  * Battery Input : GND --> 220 Ohms --> A0 <-- 1000 Ohms <-- Battery
 */
 
+#include <PID_v1.h>
+
 float goal_speed_part1 = 10.05; //°.s-1  (OLD : 9.78)
 float goal_speed_part2 = 11.22;
 
 // Angle & Speed Variable
-float start_PWM_speed = 2.884, motor_PWM_speed = start_PWM_speed; // init PWM (0-100)
+float start_PWM_speed = 2.884;
+double motor_PWM_speed = start_PWM_speed; // init PWM (0-100)
 float max_PWM_speed = 5;
 
-float goal_speed = goal_speed_part1; // will get overwritten during setup
+double goal_speed = goal_speed_part1; // will get overwritten during setup
 
 float offset_angle = 0; // Depending of magnet position, stored in EEPROM
 
@@ -38,20 +41,31 @@ float measurement_diff_angle;
 float measurement_acceleration;
 
 // Used to have an sliding window averaging of speed_feedback values
-const int speed_avg_length = 15;
+const int speed_avg_length = 20;
 float speed_fb_array[speed_avg_length];
+
+// sliding window avergaing of output PWM command
+const int PWM_avg_length = 5;
+float PWM_array[PWM_avg_length];
 
 // statistical values that get computed
 float next_speed = goal_speed_part1;
 float statistical_slope = 0.0; // close to acceleration, but calculated statistically
 
+// variables used by PID library
+double temp_speed_feedback = goal_speed_part1;
+double Kp=0.6, Ki=0.04, Kd=0.0;
+int PID_sample_time = 150;
+
+PID servoPID(&temp_speed_feedback, &motor_PWM_speed, &goal_speed, Kp, Ki, Kd, DIRECT);
+
 void setup() { 
   Serial.begin(115200);
 
   delay(50);
-  
+
   writeSpeed(0);
-  
+
   Serial.println("");Serial.println("########## START Petite Boite Musique #########");
 
   setupWifi();
@@ -59,12 +73,16 @@ void setup() {
   setupEeprom();
 
   setupMicroSwitch();
-  
+
   setupAngle();
 
-  setup_speed_array(speed_fb_array, speed_avg_length, goal_speed);
+  setup_array(speed_fb_array, speed_avg_length, goal_speed);
+
+  setup_array(PWM_array, PWM_avg_length, start_PWM_speed);
 
   next_speed = goal_speed;
+
+  temp_speed_feedback = goal_speed;
 
 //  setupOTA();
 
@@ -75,6 +93,13 @@ void setup() {
   #endif
   
   writeSpeed(start_PWM_speed);
+
+  servoPID.SetOutputLimits(0.0, 5.0);
+
+  servoPID.SetSampleTime(PID_sample_time);
+
+  servoPID.SetMode(AUTOMATIC);
+
 }
 
 

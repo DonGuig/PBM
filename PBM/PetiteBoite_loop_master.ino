@@ -21,12 +21,12 @@ void syncPointLoop(){
 //    Serial.print(local_time);Serial.print(";");Serial.print(diff_time);Serial.print(";");
 
 
-    Serial.print(goal_speed);Serial.print(";");
+    //Serial.print(goal_speed);Serial.print(";");
     //Serial.print(measurement_angle);Serial.print(";");//Serial.print(diff_angle());Serial.print(";");
-    Serial.print(1000.0 * statistical_slope);Serial.print(";");
-    Serial.print(measurement_speed_feedback);Serial.print(";");
-    Serial.print(next_speed);Serial.print(";");  
-    Serial.print(motor_PWM_speed);Serial.println(";");
+    //Serial.print(1000.0 * statistical_slope);Serial.print(";");
+    //Serial.print(next_speed);Serial.print(";");
+    //Serial.print(next_speed);Serial.print(";");  
+    //Serial.print(motor_PWM_speed);Serial.println(";");
 
 
     // DEBUG
@@ -39,27 +39,38 @@ void syncPointLoop(){
 //        Serial.print(" acceleration ");Serial.print(abs(acceleration()));
 //    Serial.print(" send speed : ");Serial.println(motor_PWM_speed);
 //    Serial.print(" voltage : ");Serial.println(batteryVoltage); 
-  }
+}
 }
 
 
 void servoLoop() {
-  if ((sync_millis() - old_local_time) > 250) { // Servo LOOP           
+
+  if ((sync_millis() - old_local_time) > PID_sample_time) { // Servo LOOP           
     getAngle();
 
     enqueue_and_rotate_array(speed_fb_array, speed_avg_length, speed_feedback());
 
     //Serial.print("Avg speed_feedback : "); Serial.println(array_average(speed_fb_array, speed_avg_length));
-    compute_statistics(speed_fb_array, speed_avg_length, 1);
+    compute_statistics(speed_fb_array, speed_avg_length, 0);
+    float avg = array_average(speed_fb_array, speed_avg_length);
+    temp_speed_feedback = weighted_average(avg, next_speed, 100);
+
+    Serial.print(goal_speed);Serial.print(";");
+    Serial.print(next_speed);Serial.print(";");
+    Serial.print(avg);Serial.print(";");
+    Serial.print(speed_feedback());Serial.print(";");
+    Serial.print(temp_speed_feedback);Serial.print(";");
+    Serial.print(motor_PWM_speed);Serial.println(";");
 
     //print_array(speed_fb_array, speed_avg_length);
-    //Serial.print(next_speed);Serial.print(";");
+    
     //Serial.print(statistical_slope);Serial.println(";");
+    //float input_speed = weighted_average(next_speed, statistical_slope, 100);
 
-    float input_speed = weighted_average(next_speed, statistical_slope, 100);
 
+/*
   if (diff_angle() > 0.1 && diff_angle() < 20) { // mesure error or near 360
-     
+
     writeSpeed(motor_PWM_speed + servo_speed_step());   
   }
 
@@ -69,10 +80,27 @@ void servoLoop() {
     //Serial.print(" acceleration ");Serial.print(acceleration());
     Serial.println();
   }  
+*/
 
 
-  updateOldAngle();
+    updateOldAngle();
   }
+  if (servoPID.Compute()) {
+    
+    //Serial.print("Kp : "); Serial.println(servoPID.GetKp());
+    //Serial.print("Ki : "); Serial.println(servoPID.GetKi());
+    //Serial.print("Kd : "); Serial.println(servoPID.GetKd());
+    //Serial.print("mode : "); Serial.println(servoPID.GetMode());
+
+    //enqueue_and_rotate_array(PWM_array, PWM_avg_length, motor_PWM_speed);
+
+    //float real_output_PWM = array_average(PWM_array, PWM_avg_length);
+
+    //Serial.print(real_output_PWM);Serial.println(";");
+
+
+  }
+  writeSpeed(motor_PWM_speed);
 }
 
 float weighted_average(float a, float b, int percentage_of_a) {

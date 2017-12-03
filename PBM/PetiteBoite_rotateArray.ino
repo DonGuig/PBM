@@ -4,7 +4,7 @@ QuickStats stats;
 
 // Function to shift all elements in an array, discard the oldest one and add a new one instead.
 
-void setup_speed_array (float array[], int array_size, float speed) {
+void setup_array (float array[], int array_size, float speed) {
 
 	for (int i = 0; i < array_size; i ++) {
 		array[i] = speed;
