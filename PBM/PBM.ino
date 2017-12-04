@@ -1,5 +1,5 @@
 // SELECTION MASTER or SLAVE
-#define MASTER 1
+#define MASTER 0
 
 /*
  * ELECTRONIC CONNECTION :
@@ -38,7 +38,7 @@ float measurement_diff_angle;
 float measurement_acceleration;
 
 // Used to have an sliding window averaging of speed_feedback values
-const int speed_avg_length = 15;
+const int speed_avg_length = 20;
 float speed_fb_array[speed_avg_length];
 
 // statistical values that get computed

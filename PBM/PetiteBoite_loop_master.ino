@@ -2,7 +2,7 @@
 #if MASTER == 1 // UNIQUEMENT POUR LE MASTER
 
 unsigned long old_local_time_for_udp;
-unsigned long refresh_time_for_udp = 250;
+unsigned long refresh_time_for_udp = 150;
 
 void syncPointLoop(){
   if ((sync_millis() - old_local_time_for_udp) > refresh_time_for_udp) {
@@ -44,13 +44,13 @@ void syncPointLoop(){
 
 
 void servoLoop() {
-  if ((sync_millis() - old_local_time) > 250) { // Servo LOOP           
+  if ((sync_millis() - old_local_time) > 150) { // Servo LOOP           
     getAngle();
 
     enqueue_and_rotate_array(speed_fb_array, speed_avg_length, speed_feedback());
 
     //Serial.print("Avg speed_feedback : "); Serial.println(array_average(speed_fb_array, speed_avg_length));
-    compute_statistics(speed_fb_array, speed_avg_length, 1);
+    compute_statistics(speed_fb_array, speed_avg_length, 0);
 
     //print_array(speed_fb_array, speed_avg_length);
     //Serial.print(next_speed);Serial.print(";");
@@ -80,10 +80,17 @@ float weighted_average(float a, float b, int percentage_of_a) {
 }
 
 float servo_speed_step() {
-  float step_factor = 0.08;
+  float step_factor = 0.06;
   float slope_factor = 0.0;
 
-  return (step_factor * ((goal_speed - next_speed) + slope_factor * statistical_slope));
+  float max_step = 0.1;
+
+  float step = step_factor * ((goal_speed - next_speed) + slope_factor * statistical_slope);
+
+  if (step > max_step) step = max_step;
+  else if (step < (- max_step)) step = (-max_step);
+
+  return step;
 
 }
 
