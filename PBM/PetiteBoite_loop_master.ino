@@ -45,59 +45,33 @@ void syncPointLoop(){
 
 void servoLoop() {
 
-  if ((sync_millis() - old_local_time) > PID_sample_time) { // Servo LOOP           
+  if ((sync_millis() - old_local_time) > 10) { // Servo LOOP           
     getAngle();
 
-    enqueue_and_rotate_array(speed_fb_array, speed_avg_length, speed_feedback());
-
-    //Serial.print("Avg speed_feedback : "); Serial.println(array_average(speed_fb_array, speed_avg_length));
-    compute_statistics(speed_fb_array, speed_avg_length, 0);
-    float avg = array_average(speed_fb_array, speed_avg_length);
-    temp_speed_feedback = weighted_average(avg, next_speed, 100);
+    compute_expected_angle(goal_speed);
 
     Serial.print(goal_speed);Serial.print(";");
-    Serial.print(next_speed);Serial.print(";");
-    Serial.print(avg);Serial.print(";");
-    Serial.print(speed_feedback());Serial.print(";");
-    Serial.print(temp_speed_feedback);Serial.print(";");
+    Serial.print(expected_angle - local_angle);Serial.print(";");
+    Serial.print(local_angle);Serial.print(";");
+    Serial.print(expected_angle);Serial.print(";");
     Serial.print(motor_PWM_speed);Serial.println(";");
-
-    //print_array(speed_fb_array, speed_avg_length);
-    
-    //Serial.print(statistical_slope);Serial.println(";");
-    //float input_speed = weighted_average(next_speed, statistical_slope, 100);
-
-
-/*
-  if (diff_angle() > 0.1 && diff_angle() < 20) { // mesure error or near 360
-
-    writeSpeed(motor_PWM_speed + servo_speed_step());   
-  }
-
-  else {
-    Serial.print("MESUREMENT ERROR : ");
-    //Serial.print("diff_angle ");Serial.print(diff_angle());
-    //Serial.print(" acceleration ");Serial.print(acceleration());
-    Serial.println();
-  }  
-*/
-
 
     updateOldAngle();
   }
   if (servoPID.Compute()) {
-    
+    send_master_sync_point(local_time, expected_angle);
+
+/*
+    Serial.print(goal_speed);Serial.print(";");
+    Serial.print(expected_angle - local_angle);Serial.print(";");
+    Serial.print(local_angle);Serial.print(";");
+    Serial.print(expected_angle);Serial.print(";");
+    Serial.print(motor_PWM_speed);Serial.println(";");
+*/  
     //Serial.print("Kp : "); Serial.println(servoPID.GetKp());
     //Serial.print("Ki : "); Serial.println(servoPID.GetKi());
     //Serial.print("Kd : "); Serial.println(servoPID.GetKd());
     //Serial.print("mode : "); Serial.println(servoPID.GetMode());
-
-    //enqueue_and_rotate_array(PWM_array, PWM_avg_length, motor_PWM_speed);
-
-    //float real_output_PWM = array_average(PWM_array, PWM_avg_length);
-
-    //Serial.print(real_output_PWM);Serial.println(";");
-
 
   }
   writeSpeed(motor_PWM_speed);
@@ -114,57 +88,5 @@ float servo_speed_step() {
   return (step_factor * ((goal_speed - next_speed) + slope_factor * statistical_slope));
 
 }
-
-/*
-float servo_speed_step(float input_speed) {
-  float servo_step = 0;
-  if (input_speed < goal_speed) {
-      if (input_speed < goal_speed * 0.90) {
-        servo_step = 0.08;
-      }
-      else if (input_speed < goal_speed * 0.95) {
-        servo_step = 0.06;
-      }
-      else if (input_speed < goal_speed * 0.96) {
-        servo_step = 0.05;
-      }
-      else if (input_speed < goal_speed * 0.97) {
-        servo_step = 0.04;
-      }
-      else if (input_speed < goal_speed * 0.98) {
-        servo_step = 0.03;
-      }
-      else if (input_speed < goal_speed * 0.99) {
-        servo_step = 0.02;
-      }
-      else
-        servo_step = 0.01;
-    }  
-  else if (input_speed > goal_speed) {
-      if (input_speed > goal_speed * 1.10) {
-        servo_step = -0.08;
-      }
-      else if (input_speed > goal_speed * 1.05) {
-        servo_step = -0.06;
-      }
-      else if (input_speed > goal_speed * 1.04) {
-        servo_step = -0.05;
-      }
-      else if (input_speed > goal_speed * 1.03) {
-        servo_step = -0.04;
-      }
-      else if (input_speed > goal_speed * 1.02) {
-        servo_step = -0.03;
-      }
-      else if (input_speed > goal_speed * 1.01) {
-        servo_step = -0.02;
-      }
-      else 
-        servo_step = -0.01;
-    }
-    return servo_step;
-}
-*/
-
 
 #endif

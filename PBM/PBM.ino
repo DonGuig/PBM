@@ -1,5 +1,5 @@
 // SELECTION MASTER or SLAVE
-#define MASTER 1
+#define MASTER 0
 
 /*
  * ELECTRONIC CONNECTION :
@@ -26,11 +26,11 @@ float offset_angle = 0; // Depending of magnet position, stored in EEPROM
 // Slave receive point from master
 boolean new_point = false;
 unsigned long master_time;
-float master_angle, master_speed;
+double master_angle, master_speed;
 
 // Global Variable of angle & timing
 unsigned long local_time, old_local_time;
-float local_angle, old_local_angle;
+double local_angle, old_local_angle;
 float old_speed_feedback;
 
 // Global variables for measurement only
@@ -54,10 +54,19 @@ float statistical_slope = 0.0; // close to acceleration, but calculated statisti
 
 // variables used by PID library
 double temp_speed_feedback = goal_speed_part1;
-double Kp=0.6, Ki=0.04, Kd=0.0;
-int PID_sample_time = 150;
+double Kp=1.0, Ki=0.05, Kd=0.00;
+int PID_sample_time = 100;
 
-PID servoPID(&temp_speed_feedback, &motor_PWM_speed, &goal_speed, Kp, Ki, Kd, DIRECT);
+// variable to compute the expected angle
+double expected_angle;
+unsigned long millis_at_start_of_part;
+float start_angle;
+
+#if MASTER == 1
+PID servoPID(&local_angle, &motor_PWM_speed, &expected_angle, Kp, Ki, Kd, DIRECT);
+#else
+PID servoPID(&local_angle, &motor_PWM_speed, &master_angle, Kp, Ki, Kd, DIRECT);
+#endif
 
 void setup() { 
   Serial.begin(115200);
@@ -76,13 +85,8 @@ void setup() {
 
   setupAngle();
 
-  setup_array(speed_fb_array, speed_avg_length, goal_speed);
+  reset_expected_angle(local_angle);
 
-  setup_array(PWM_array, PWM_avg_length, start_PWM_speed);
-
-  next_speed = goal_speed;
-
-  temp_speed_feedback = goal_speed;
 
 //  setupOTA();
 
@@ -94,11 +98,13 @@ void setup() {
   
   writeSpeed(start_PWM_speed);
 
-  servoPID.SetOutputLimits(0.0, 5.0);
+  servoPID.SetOutputLimits(1.5, 5.0);
 
   servoPID.SetSampleTime(PID_sample_time);
 
   servoPID.SetMode(AUTOMATIC);
+
+  delay(100);
 
 }
 
@@ -114,10 +120,10 @@ void loop() {
   
   servoLoop(); //loops_slave OR loop_master
   #if MASTER == 1
-  syncPointLoop();
+  //syncPointLoop();
   #endif
 
-//  delay(5);
+  //delay(1);
 }
 
 // ######## FONCTION MODULO FLOAT ############

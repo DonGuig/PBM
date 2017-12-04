@@ -1,3 +1,5 @@
+/*
+
 #include "QuickStats.h"
 
 QuickStats stats;
@@ -111,3 +113,4 @@ float compute_statistics(float param[], int param_size, int num_loops) {
 
 
 }
+*/

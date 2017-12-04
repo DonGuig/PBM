@@ -10,6 +10,30 @@ void servoLoop() {
   if (new_point) {
     getAngle();
 
+
+    Serial.print(goal_speed);Serial.print(";");
+    Serial.print(master_angle - local_angle);Serial.print(";");
+    Serial.print(local_angle);Serial.print(";");
+    Serial.print(master_angle);Serial.print(";");
+    Serial.print(motor_PWM_speed);Serial.println(";");
+
+    servoPID.Compute();
+
+    //When we're getting very close to the change of part
+    //we disengage the PID control
+    // This way if the master makes it to the next part before the slave, it won't impact it
+    // This will get back to AUTOMATIC once the switch is triggered
+    if (local_angle > 355 && local_angle <= 360) {
+      servoPID.SetMode(MANUAL);
+    }
+    if (local_angle > 715 && local_angle <= 720) {
+      servoPID.SetMode(MANUAL);
+    }
+
+
+    writeSpeed(motor_PWM_speed);
+
+/*
     ///////// NEAR MASTER //////////
     if (abs(diff_angle_master()) <= 5) { // near master
 //        Serial.print("near_master ");
@@ -66,7 +90,7 @@ void servoLoop() {
       was_near = false;
       Serial.println();
     }
-
+*/
 
     // DEBUG
 //    Serial.print(" angle ");Serial.print(local_angle);
@@ -87,12 +111,12 @@ void servoLoop() {
 //    Serial.print(" voltage : ");Serial.print(batteryVoltage);
 
     //Serial.print(local_angle);Serial.print(" ");
-    Serial.print(diff_speed());Serial.print(" ");
+    //Serial.print(diff_speed());Serial.print(" ");
 //    Serial.print(speed_feedback());Serial.print(";");
-    Serial.print(diff_angle_master());Serial.print(" ");
+    //Serial.print(diff_angle_master());Serial.print(" ");
 //    Serial.print(motor_PWM_speed);Serial.print(";");
 
-    Serial.println();
+    //Serial.println();
     new_point = false; 
     updateOldAngle();
   }

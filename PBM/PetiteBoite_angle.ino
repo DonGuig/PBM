@@ -13,7 +13,7 @@ void setupAngle() {
   getFirstAngle();
 }
 
-void getFirstAngle() {
+float getFirstAngle() {
   
 //  angleSensor.updateMovingAvgExp();delay(100);
 //  angleSensor.updateMovingAvgExp();delay(100);
@@ -114,6 +114,19 @@ void updateOldAngle() {
   old_speed_feedback = speed_feedback();
   old_local_time = local_time;
   old_local_angle = local_angle;
+}
+
+void reset_expected_angle(float input_angle) {
+  // input_angle should be either 0 or 360, depending on if
+  // we are in part 1 or part 2
+  start_angle = input_angle;
+  expected_angle = input_angle;
+  millis_at_start_of_part = millis();
+}
+
+void compute_expected_angle(float target_speed) {
+  float diff_time_seconds = (millis() - millis_at_start_of_part) / 1000.0;
+  expected_angle = (start_angle + diff_time_seconds * target_speed);
 }
 
 #if MASTER == 0

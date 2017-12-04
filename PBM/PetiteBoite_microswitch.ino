@@ -31,8 +31,12 @@ bool checkAndUpdateMicroSwitchState() {
         /// #####################
         // The delay is there to let the motor get to speed before the next measurement
         /// #####################
+        goal_speed = goal_speed_part1;
         delay(500);
-    		goal_speed = goal_speed_part1;
+        getAngle();
+        updateOldAngle();
+        reset_expected_angle(local_angle);
+    		
 
     		#if MASTER == 0        
       		if(!checkWifi())
@@ -45,15 +49,18 @@ bool checkAndUpdateMicroSwitchState() {
         /// #####################
         // The delay is there to let the motor get to speed before the next measurement
         /// #####################
+        goal_speed = goal_speed_part2;
         delay(500);
-    		goal_speed = goal_speed_part2;
+        getAngle();
+        updateOldAngle();
+        reset_expected_angle(local_angle);
     	}
 
     // At switch change, we need the average to start fresh
     //Serial.println("about to refresh speed_fb_array");
-    setup_array(speed_fb_array, speed_avg_length, goal_speed);
     //print_array(speed_fb_array, speed_avg_length);
 
+    // we reset the PID
     servoPID.SetMode(MANUAL);
     servoPID.SetMode(AUTOMATIC);
 
