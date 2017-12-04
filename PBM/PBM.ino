@@ -1,5 +1,5 @@
 // SELECTION MASTER or SLAVE
-#define MASTER 0
+#define MASTER 1
 
 /*
  * ELECTRONIC CONNECTION :
@@ -33,6 +33,8 @@ unsigned long local_time, old_local_time;
 double local_angle, old_local_angle;
 float old_speed_feedback;
 
+bool approached_end_of_part = 0;
+
 // Global variables for measurement only
 unsigned long measurement_time, old_measurement_time;
 float measurement_angle, old_measurement_angle;
@@ -54,7 +56,7 @@ float statistical_slope = 0.0; // close to acceleration, but calculated statisti
 
 // variables used by PID library
 double temp_speed_feedback = goal_speed_part1;
-double Kp=1.0, Ki=0.05, Kd=0.00;
+double Kp=1.0, Ki=0.5, Kd=0.00;
 int PID_sample_time = 100;
 
 // variable to compute the expected angle
@@ -98,7 +100,7 @@ void setup() {
   
   writeSpeed(start_PWM_speed);
 
-  servoPID.SetOutputLimits(1.5, 5.0);
+  servoPID.SetOutputLimits(1.5, 4.0);
 
   servoPID.SetSampleTime(PID_sample_time);
 
