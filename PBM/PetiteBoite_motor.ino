@@ -1,5 +1,5 @@
 // MOTOR SPI
-#include "WEMOS_Motor.h"
+#include "WEMOS_Motor-MOD_PBM.h"
 
 Motor M1(0x30, _MOTOR_B, 15000); //PWM frequency: 15 kHz
 

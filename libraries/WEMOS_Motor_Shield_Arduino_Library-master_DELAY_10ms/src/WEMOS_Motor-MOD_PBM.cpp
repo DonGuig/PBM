@@ -1,4 +1,4 @@
-#include "WEMOS_Motor.h"
+#include "WEMOS_Motor-MOD_PBM.h"
 
 /* Motor()
 address:
