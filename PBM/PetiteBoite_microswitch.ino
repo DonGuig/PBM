@@ -20,31 +20,32 @@ bool checkAndUpdateMicroSwitchState() {
 
 // HERE WE SHOULD PUT EVERYTHING THAT HAS TO HAPPEN WHEN THE MICROSWITCH CHANGES STATE !!!!
   if (microSwitchState != old_microSwitchState) {
-      Serial.println("microswitch CHANGE");   
+      Serial.println("microswitch CHANGE"); 
+        
       if (microSwitchState == HIGH) { //we're coming back to part1
-
+        getAngle();
+        updateOldAngle();
+        
         changeOffset();
         updateEeprom();
 
         goal_speed = goal_speed_part1;
-
-        getAngle();
-        updateOldAngle();
-        
+       
 #if MASTER == 1
         while (local_angle > 1) {
           getAngle();
           updateOldAngle();
           delay(10);
         }
+        send_master_end_freewheel();
         reset_expected_angle(local_angle);
 #else
         delay(10);
         checkWifi(); // this will reboot if the device disconnected
 #endif
       }
+      
       else { // we're entering part2
-
         goal_speed = goal_speed_part2;
 
         getAngle();
@@ -55,6 +56,7 @@ bool checkAndUpdateMicroSwitchState() {
           updateOldAngle();
           delay(10);
         }
+        send_master_end_freewheel();
         reset_expected_angle(local_angle);
 #else
         delay(10);

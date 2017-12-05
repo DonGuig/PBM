@@ -1,12 +1,13 @@
 // SELECTION MASTER or SLAVE
-#define MASTER 0
-
+#define MASTER 1
+#define SerialNumber 2 //Used to make array with value for imprecision
 /*
  * ELECTRONIC CONNECTION :
  * 
  * I2C input (sensor & motor) : SCL D1, SDA D2
  * Button input : GND, (D0 -> 10k/3.3V)
  * Battery Input : GND --> 220 Ohms --> A0 <-- 1000 Ohms <-- Battery
+ * 
 */
 
 #include <PID_v1.h>
@@ -26,12 +27,11 @@ float offset_angle = 0; // Depending of magnet position, stored in EEPROM
 // Slave receive point from master
 boolean new_point = false;
 unsigned long master_time;
-double master_angle, master_speed;
+double master_angle;
 
 // Global Variable of angle & timing
 unsigned long local_time, old_local_time;
 double local_angle, old_local_angle;
-float old_speed_feedback;
 
 bool approached_end_of_part = 0;
 
@@ -75,8 +75,6 @@ void setup() {
 
   reset_expected_angle(local_angle);
 
-//  setupOTA();
-
   setupUdp();
 
   #if MASTER == 0
@@ -97,7 +95,6 @@ void setup() {
   servoPID.SetMode(AUTOMATIC);
 
   delay(100);
-
 }
 
 
@@ -107,15 +104,10 @@ void loop() {
   receiveUdp(); // UDP INPUT 
 
   servoLoop(); //loops_slave OR loop_master
-
 }
 
 // ######## FONCTION MODULO FLOAT ############
 float f_mod(float a, float n) {          
   return a - n * floor(a / n);
 }
-
-
-
-
 

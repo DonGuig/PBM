@@ -17,7 +17,6 @@ void setupEeprom() {
   }
 }
 
-
 void updateEeprom() {
   if (f_mod((EEPROM.get(0,offset_eeprom) - offset_angle),360) > 5)
     init_eeprom = true;  
