@@ -1,5 +1,5 @@
 // SELECTION MASTER or SLAVE
-#define MASTER 1
+#define MASTER 0
 
 /*
  * ELECTRONIC CONNECTION :
@@ -35,29 +35,15 @@ float old_speed_feedback;
 
 bool approached_end_of_part = 0;
 
-// Global variables for measurement only
-unsigned long measurement_time, old_measurement_time;
-float measurement_angle, old_measurement_angle;
-float measurement_speed_feedback, old_measurement_speed_feedback;
-float measurement_diff_angle;
-float measurement_acceleration;
-
-// Used to have an sliding window averaging of speed_feedback values
-const int speed_avg_length = 20;
-float speed_fb_array[speed_avg_length];
-
-// sliding window avergaing of output PWM command
-const int PWM_avg_length = 5;
-float PWM_array[PWM_avg_length];
-
-// statistical values that get computed
-float next_speed = goal_speed_part1;
-float statistical_slope = 0.0; // close to acceleration, but calculated statistically
-
 // variables used by PID library
 double temp_speed_feedback = goal_speed_part1;
 double Kp=1.0, Ki=0.5, Kd=0.00;
-int PID_sample_time = 100;
+
+int PID_sample_time = 105; // Set to 105ms because writeSpeed takes 100ms
+// due to the way PID_library is coded, having a sample time below 100ms could
+// lead to unwanted behaviour combined with the writeSpeed delay
+
+unsigned long last_pid_compute_time;
 
 // variable to compute the expected angle
 double expected_angle;
@@ -89,20 +75,24 @@ void setup() {
 
   reset_expected_angle(local_angle);
 
-
 //  setupOTA();
 
   setupUdp();
 
   #if MASTER == 0
-  slave_ask_for_resync();
+  slave_resync_procedure();
   #endif
-  
+
   writeSpeed(start_PWM_speed);
 
-  servoPID.SetOutputLimits(1.5, 4.0);
+  servoPID.SetOutputLimits(0.0, 4.0);
 
+  // We're doing the following because of the way the servo_loop of the slave is made (timing)
+  #if MASTER == 1
   servoPID.SetSampleTime(PID_sample_time);
+  #else
+  servoPID.SetSampleTime(PID_sample_time-10);
+  #endif
 
   servoPID.SetMode(AUTOMATIC);
 
@@ -113,19 +103,11 @@ void setup() {
 
 void loop() {
   checkAndUpdateMicroSwitchState();
-  
+
   receiveUdp(); // UDP INPUT 
-  
-//  readBattery();  // CRASH WIFI - not use
 
-//  ota();
-  
   servoLoop(); //loops_slave OR loop_master
-  #if MASTER == 1
-  //syncPointLoop();
-  #endif
 
-  //delay(1);
 }
 
 // ######## FONCTION MODULO FLOAT ############

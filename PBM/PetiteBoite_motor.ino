@@ -3,6 +3,10 @@
 
 Motor M1(0x30, _MOTOR_A, 15000); //PWM frequency: 15 kHz
 
+//##################
+// IMPORTANT : THIS FUNCTION HAS A 100MS LATENCY
+//##################
+
 void writeSpeed(float speed_to_write) {
 
 //  if (speed_to_write - motor_PWM_speed != 0) {
