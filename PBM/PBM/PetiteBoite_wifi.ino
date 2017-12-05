@@ -60,13 +60,15 @@ void setupWifi() {
 }
 
 #if MASTER == 0
-void checkWifi() { // this will reboot the device if connection was lost
+bool checkWifi() {
+  bool wifi_statut = false;
   if (WiFi.status() != WL_CONNECTED) {
     Serial.println("disconnected");
     while (WiFi.waitForConnectResult() != WL_CONNECTED) {Serial.println("Connection Failed! Rebooting...");delay(5000);ESP.restart();}
   }
   else {
     Serial.println("Still Connected");
+    wifi_statut = true;
   }
 }
 #endif
@@ -85,15 +87,11 @@ void routeUdp() {
 #else
   receive_slave_clock_offset(strAddress); //ptp
   receive_slave_t1(strAddress); //ptp
-    receive_slave_syncPoint(strAddress); // on slave_loop
-  receive_slave_freewheel_syncpoint(strAddress); // on slave_loop
-  receive_slave_end_freewheel(strAddress); // on slave_loop
+  receive_slave_syncPoint(strAddress); // dans petiteBoite_angle
 #endif
 }
 
 void sendUdp(String Content) {
-  // NOTE : Takes around 1ms
-
 //  Serial.print("SENDUDP : ");Serial.println(Content);
   char content_char[255];
   Content.toCharArray(content_char, 255);
@@ -104,7 +102,7 @@ void sendUdp(String Content) {
 
 
 void receiveUdp() {
-  // NOTE : Takes less than 1ms
+//  Udp.flush(); // we only want to receive the next arriving packet, not old ones in the buffer
   memset(incomingPacket, 0, 255);
   int packetSize = Udp.parsePacket();
   if (packetSize) {
@@ -114,6 +112,18 @@ void receiveUdp() {
       incomingPacket[len] = 0;
     routeUdp();
   }
+  else
+    delay(1);
 }
 
+void send_master_sync_point(unsigned long loc_time, float loc_angle) {
+  sendUdp("SYNC_POINT " + String(loc_time) + " " + String(loc_angle));
+}
 
+void receive_slave_syncPoint(char* strAddress){
+  if (strcmp(strAddress,"SYNC_POINT") == 0) {
+    master_time = strtoul(strtok(NULL, " "), NULL, 0);
+    master_angle = strtod(strtok(NULL, " "), NULL);
+    new_point = true;
+  }
+}

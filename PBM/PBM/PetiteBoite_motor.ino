@@ -1,11 +1,7 @@
 // MOTOR SPI
 #include "WEMOS_Motor.h"
 
-Motor M1(0x30, _MOTOR_B, 15000); //PWM frequency: 15 kHz
-
-//##################
-// IMPORTANT : THIS FUNCTION HAS A 100MS LATENCY
-//##################
+Motor M1(0x30, _MOTOR_A, 15000); //PWM frequency: 15 kHz
 
 void writeSpeed(float speed_to_write) {
 

@@ -16,47 +16,50 @@ bool simpleCheckMicroSwitch() {
 }
 
 bool checkAndUpdateMicroSwitchState() {
-	microSwitchState = digitalRead(microSwitchPin);
+  microSwitchState = digitalRead(microSwitchPin);
 
 // HERE WE SHOULD PUT EVERYTHING THAT HAS TO HAPPEN WHEN THE MICROSWITCH CHANGES STATE !!!!
-	if (microSwitchState != old_microSwitchState) {
-    	Serial.println("microswitch CHANGE");   
-    	if (microSwitchState == HIGH) { //we're coming back to part1
+  if (microSwitchState != old_microSwitchState) {
+      Serial.println("microswitch CHANGE");   
+      if (microSwitchState == HIGH) { //we're coming back to part1
 
-    		changeOffset();
+        changeOffset();
         updateEeprom();
 
         goal_speed = goal_speed_part1;
 
         getAngle();
         updateOldAngle();
-
+        
+#if MASTER == 1
         while (local_angle > 1) {
           getAngle();
           updateOldAngle();
           delay(10);
         }
-
         reset_expected_angle(local_angle);
-
-    		#if MASTER == 0
-      	checkWifi(); // this will reboot if the device disconnected
-      	#endif
-    	}
-    	else { // we're entering part2
+#else
+        delay(10);
+        checkWifi(); // this will reboot if the device disconnected
+#endif
+      }
+      else { // we're entering part2
 
         goal_speed = goal_speed_part2;
 
         getAngle();
         updateOldAngle();
-        
+#if MASTER == 1        
         while (local_angle < 361) {
           getAngle();
           updateOldAngle();
           delay(10);
         }
         reset_expected_angle(local_angle);
-    	}
+#else
+        delay(10);
+#endif
+      }
 
     // we signify that we got out of the "end of part" zone
     approached_end_of_part = 0;
@@ -70,6 +73,6 @@ bool checkAndUpdateMicroSwitchState() {
     // we refresh the measurements for them to make sense next time they get called
     getAngle();
     updateOldAngle();
-	}
+  }
   return microSwitchState;
 }

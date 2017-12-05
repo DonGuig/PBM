@@ -39,7 +39,7 @@ bool approached_end_of_part = 0;
 double temp_speed_feedback = goal_speed_part1;
 double Kp=1.0, Ki=0.5, Kd=0.00;
 
-int PID_sample_time = 105; // Set to 105ms because writeSpeed takes 100ms
+int PID_sample_time = 50; // Set to 105ms because writeSpeed takes 100ms
 // due to the way PID_library is coded, having a sample time below 100ms could
 // lead to unwanted behaviour combined with the writeSpeed delay
 
