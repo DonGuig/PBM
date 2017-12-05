@@ -1,5 +1,5 @@
 // SELECTION MASTER or SLAVE
-#define MASTER 1
+#define MASTER 0
 
 /*
  * ELECTRONIC CONNECTION :
@@ -7,8 +7,6 @@
  * I2C input (sensor & motor) : SCL D1, SDA D2
  * Button input : GND, (D0 -> 10k/3.3V)
  * Battery Input : GND --> 220 Ohms --> A0 <-- 1000 Ohms <-- Battery
- * 
- * CAREFULL : LIBRARY WEMOS MOTOR TO 5ms
 */
 
 #include <PID_v1.h>
