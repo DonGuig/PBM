@@ -16,6 +16,33 @@ float addOffsetValue(float loc_angle) {
     loc_angle = loc_angle;  
 #endif
 
+#if SerialNumber == 3 // Marseillaise #3
+  if (loc_angle < 140)
+    loc_angle += 0;
+  else if (loc_angle < 240)
+    loc_angle += 1.2;
+  else if (loc_angle < 275)
+    loc_angle += 0.6;
+  else if (loc_angle < 305)
+    loc_angle += 1.0;
+  else if (loc_angle < 355)
+    loc_angle += 1.5;
+  else if (loc_angle < 367)
+    loc_angle += 0.5;  
+  else if (loc_angle < 405)
+    loc_angle += 6.1;
+  else if (loc_angle < 450)
+    loc_angle += 7.5;
+  else if (loc_angle < 585)
+    loc_angle += 7.6;
+  else if (loc_angle < 680)
+    loc_angle += 8.0;
+  else if (loc_angle < 720)
+    loc_angle += 8.6;
+  else 
+    loc_angle = loc_angle;  
+#endif
+
 #if SerialNumber == 4 // International #4
   if (loc_angle < 2)
     loc_angle -= 0;

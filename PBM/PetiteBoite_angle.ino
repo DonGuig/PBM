@@ -33,12 +33,14 @@ void getAngle() {
   local_time = sync_millis();
   // Selon etat microswitch
   if (simpleCheckMicroSwitch() == HIGH) { // 0 - 360°, relaché
+    //Serial.println("SimpleCheck HIGH");
     if (old_local_angle > 700) // Zone d'erreur, pour régler la transition 720° -> 0°
       local_angle = f_mod(angle + offset_angle + 360, 720);
     else 
       local_angle = f_mod(angle + offset_angle, 360);
   }
   else { // 361 - 720°
+    //Serial.println("SimpleCheck LOW");
     if (old_local_angle < 360) // Zone d'erreur, pour régler la transition 359° -> 361°
       local_angle = angle + offset_angle;
     else 

@@ -12,7 +12,7 @@ void setupMicroSwitch() {
 }
 
 bool simpleCheckMicroSwitch() {
-  return digitalRead(microSwitchPin);
+  return microSwitchState;
 }
 
 bool checkAndUpdateMicroSwitchState() {
