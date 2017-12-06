@@ -1,5 +1,5 @@
 // SELECTION MASTER or SLAVE
-#define MASTER 1
+#define MASTER 0
 #define SerialNumber 2 //Used to make array with value for imprecision
 /*
  * ELECTRONIC CONNECTION :
@@ -82,6 +82,7 @@ void setup() {
   #endif
 
   writeSpeed(start_PWM_speed);
+  delay(1000);
 
   servoPID.SetOutputLimits(0.0, 4.0);
 

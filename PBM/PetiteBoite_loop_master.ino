@@ -20,7 +20,7 @@ void servoLoop() {
     if (local_angle > 350 && local_angle <= 355) {
       if (!approached_end_of_part) {
         send_master_freewheel(local_time,motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
-        writeSpeed(motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
+//        writeSpeed(motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
         servoPID.SetMode(MANUAL);
       }
       approached_end_of_part = 1; // will get reset when microswitch triggers
@@ -28,7 +28,7 @@ void servoLoop() {
     if (local_angle > 710 && local_angle <= 715) {
       if (!approached_end_of_part) {
         send_master_freewheel(local_time,motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
-        writeSpeed(motor_PWM_speed*(goal_speed_part1/goal_speed_part2));
+//        writeSpeed(motor_PWM_speed*(goal_speed_part1/goal_speed_part2));
         servoPID.SetMode(MANUAL);
       }
       approached_end_of_part = 1;
