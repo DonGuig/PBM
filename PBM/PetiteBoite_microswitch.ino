@@ -23,6 +23,7 @@ bool checkAndUpdateMicroSwitchState() {
       Serial.println("microswitch CHANGE"); 
         
       if (microSwitchState == HIGH) { //we're coming back to part1
+        delay(10); // to avoid switch bounce when we call getAngle()
         getAngle();
         updateOldAngle();
         
@@ -32,7 +33,7 @@ bool checkAndUpdateMicroSwitchState() {
         goal_speed = goal_speed_part1;
        
 #if MASTER == 1
-        while (local_angle > 1) {
+        while ((local_angle < 1.0) || (local_angle > 2.0)) {
           getAngle();
           updateOldAngle();
           delay(10);
@@ -43,20 +44,30 @@ bool checkAndUpdateMicroSwitchState() {
         delay(10);
         checkWifi(); // this will reboot if the device disconnected
 #endif
+      // we reset the PID
+      servoPID.SetMode(MANUAL);
+      servoPID.SetMode(AUTOMATIC);
       }
-      
+
+
+
       else { // we're entering part2
         goal_speed = goal_speed_part2;
+
+        delay(10); // to avoid switch bounce when we call getAngle()
 
         getAngle();
         updateOldAngle();
 #if MASTER == 1        
+/*
         while (local_angle < 361) {
           getAngle();
           updateOldAngle();
           delay(10);
         }
         send_master_end_freewheel();
+*/
+
         reset_expected_angle(local_angle);
 #else
         delay(10);
@@ -65,10 +76,6 @@ bool checkAndUpdateMicroSwitchState() {
 
     // we signify that we got out of the "end of part" zone
     approached_end_of_part = 0;
-
-    // we reset the PID
-    servoPID.SetMode(MANUAL);
-    servoPID.SetMode(AUTOMATIC);
 
     old_microSwitchState = microSwitchState;
 

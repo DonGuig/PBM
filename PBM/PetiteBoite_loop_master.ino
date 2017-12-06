@@ -16,19 +16,20 @@ void servoLoop() {
     //we disengage the PID control
     // This way if the master makes it to the next part before the slave, it won't impact it
     // This will get back to AUTOMATIC once the switch is triggered
-
+/*
     if (local_angle > 350 && local_angle <= 355) {
       if (!approached_end_of_part) {
         send_master_freewheel(local_time,motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
-//        writeSpeed(motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
+        writeSpeed(motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
         servoPID.SetMode(MANUAL);
       }
       approached_end_of_part = 1; // will get reset when microswitch triggers
     }
+*/
     if (local_angle > 710 && local_angle <= 715) {
       if (!approached_end_of_part) {
         send_master_freewheel(local_time,motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
-//        writeSpeed(motor_PWM_speed*(goal_speed_part1/goal_speed_part2));
+        writeSpeed(motor_PWM_speed*(goal_speed_part1/goal_speed_part2));
         servoPID.SetMode(MANUAL);
       }
       approached_end_of_part = 1;
@@ -39,14 +40,13 @@ void servoLoop() {
     last_pid_compute_time = sync_millis();
 
     send_master_sync_point(local_time, expected_angle);
-    writeSpeed(motor_PWM_speed);// !! 100ms delay
 
+    writeSpeed(motor_PWM_speed);// !! 10ms delay with modified library
 
-//    Serial.print(goal_speed);Serial.print(";");
-    
     Serial.print(local_angle);Serial.print(";");
+    Serial.print(goal_speed);Serial.print(";");
     Serial.print(expected_angle - local_angle);Serial.print(";");
-//    Serial.print(expected_angle);Serial.print(";");
+    Serial.print(expected_angle);Serial.print(";");
     Serial.print(motor_PWM_speed);Serial.println(";");
 
   }

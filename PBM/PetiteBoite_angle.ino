@@ -31,7 +31,6 @@ void getAngle() {
 
   float angle = angleSensor.angleR(U_DEG, true);
   local_time = sync_millis();
-  
   // Selon etat microswitch
   if (simpleCheckMicroSwitch() == HIGH) { // 0 - 360°, relaché
     if (old_local_angle > 700) // Zone d'erreur, pour régler la transition 720° -> 0°
