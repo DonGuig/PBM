@@ -72,18 +72,19 @@ void setup() {
 
   setupAngle();
 
-  reset_expected_angle(local_angle);
-
   setupUdp();
 
   #if MASTER == 0
   slave_resync_procedure();
   #endif
 
+  getAngle();
   writeSpeed(start_PWM_speed);
   delay(1000);
-
-  servoPID.SetOutputLimits(0.0, 4.0);
+  getAngle();
+  
+  reset_expected_angle(local_angle);
+  servoPID.SetOutputLimits(1.0, 4.0);
 
   // We're doing the following because of the way the servo_loop of the slave is made (timing)
   #if MASTER == 1
