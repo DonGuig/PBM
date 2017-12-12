@@ -61,6 +61,6 @@ void reset_expected_angle(float input_angle) {
 void compute_expected_angle(float target_speed) {
   float diff_time_seconds = (sync_millis() - millis_at_start_of_part) / 1000.0;
   expected_angle = (start_angle + diff_time_seconds * target_speed);
-  expected_angle = addOffsetValue(local_angle);
+  expected_angle = addOffsetValue(expected_angle);
 }
 
