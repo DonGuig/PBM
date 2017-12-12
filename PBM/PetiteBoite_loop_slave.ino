@@ -16,8 +16,7 @@ void servoLoop() {
 
     writeSpeed(motor_PWM_speed); // !! Takes about 100ms
 
-    new_point = false; 
-    updateOldAngle();
+    new_point = false;     
   }
 }
 
@@ -46,7 +45,7 @@ void receive_slave_end_freewheel(char* strAddress){
   if (strcmp(strAddress,"END_FREEWHEEL") == 0) {
     Serial.println("END FREEWHEEL");
     getAngle();
-    updateOldAngle();
+    
     //reset_expected_angle(local_angle);
     servoPID.SetMode(MANUAL);
     servoPID.SetMode(AUTOMATIC);

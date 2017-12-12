@@ -48,7 +48,6 @@ void getAngle() {
     else 
       local_angle = f_mod(angle + offset_angle, 360) + 360;
   }
-  
 }
 
 

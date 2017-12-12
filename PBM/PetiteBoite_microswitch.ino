@@ -25,7 +25,7 @@ bool checkAndUpdateMicroSwitchState() {
       if (microSwitchState == HIGH) { //we're coming back to part1
         delay(10); // to avoid switch bounce when we call getAngle()
         getAngle();
-        updateOldAngle();
+        
         
         changeOffset();
         updateEeprom();
@@ -35,7 +35,7 @@ bool checkAndUpdateMicroSwitchState() {
 #if MASTER == 1
         while ((local_angle < 1.0) || (local_angle > 2.0)) {
           getAngle();
-          updateOldAngle();
+          
           delay(10);
         }
         send_master_end_freewheel();
@@ -57,12 +57,12 @@ bool checkAndUpdateMicroSwitchState() {
         delay(10); // to avoid switch bounce when we call getAngle()
 
         getAngle();
-        updateOldAngle();
+        
 #if MASTER == 1        
 /*
         while (local_angle < 361) {
           getAngle();
-          updateOldAngle();
+          
           delay(10);
         }
         send_master_end_freewheel();
@@ -81,7 +81,7 @@ bool checkAndUpdateMicroSwitchState() {
 
     // we refresh the measurements for them to make sense next time they get called
     getAngle();
-    updateOldAngle();
+    
   }
   return microSwitchState;
 }

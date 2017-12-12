@@ -8,8 +8,6 @@ void servoLoop() {
 
     getAngle();
     compute_expected_angle(goal_speed);
-
-    updateOldAngle();
   }
 
     //When we're getting very close to the change of part
