@@ -20,13 +20,12 @@ bool checkAndUpdateMicroSwitchState() {
 
 // HERE WE SHOULD PUT EVERYTHING THAT HAS TO HAPPEN WHEN THE MICROSWITCH CHANGES STATE !!!!
   if (microSwitchState != old_microSwitchState) {
-      Serial.println("microswitch CHANGE"); 
-        
+      Serial.print("microswitch CHANGE @ "); Serial.println(local_angle);
+      
       if (microSwitchState == HIGH) { //we're coming back to part1
-        delay(10); // to avoid switch bounce when we call getAngle()
-        getAngle();
-        
-        
+//        delay(10); // to avoid switch bounce when we call getAngle()
+//        getAngle();
+        local_angle = 0;        
         changeOffset();
         updateEeprom();
 

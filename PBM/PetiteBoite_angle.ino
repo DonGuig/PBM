@@ -23,7 +23,7 @@ float getFirstAngle() {
 void changeOffset() {
   //should get called when we change part
   Serial.print(offset_angle);
-  offset_angle = 360 - angleSensor.angleR(U_DEG, true) - 3; //-3 = SAFETY        
+  offset_angle = 360 - angleSensor.angleR(U_DEG, true) ; //-3 = SAFETY  removed      
 }
 
 void getAngle() {
@@ -31,9 +31,17 @@ void getAngle() {
   old_local_time = local_time;
   old_local_angle = local_angle;
   
-  float angle = angleSensor.angleR(U_DEG, true);
+  float angle = angleSensor.angleR(U_DEG, true) + offset_angle;
   local_time = sync_millis();
+
+  angle = f_mod(angle, 360.);
+
+  if (angle - old_local_angle < -300) 
+    angle += 360;
+
+  local_angle = angle;
   // Selon etat microswitch
+  /*
   if (simpleCheckMicroSwitch() == HIGH) { // 0 - 360°, relaché
     //Serial.println("SimpleCheck HIGH");
     if (old_local_angle > 700) // Zone d'erreur, pour régler la transition 720° -> 0°
@@ -48,6 +56,7 @@ void getAngle() {
     else 
       local_angle = f_mod(angle + offset_angle, 360) + 360;
   }
+  */
 }
 
 
