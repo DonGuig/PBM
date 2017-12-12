@@ -1,5 +1,5 @@
 // SELECTION MASTER or SLAVE
-#define MASTER 1
+#define MASTER 0
 #define SerialNumber 3 //Used to make array with value for imprecision
 /*
  * ELECTRONIC CONNECTION :
@@ -84,7 +84,7 @@ void setup() {
   getAngle();
   
   reset_expected_angle(local_angle);
-  servoPID.SetOutputLimits(1.0, 4.0);
+  servoPID.SetOutputLimits(0.5, 7.0);
 
   // We're doing the following because of the way the servo_loop of the slave is made (timing)
   #if MASTER == 1

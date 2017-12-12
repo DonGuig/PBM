@@ -28,7 +28,9 @@ void changeOffset() {
 
 void getAngle() {
   // Please note that this function has less than 1ms delay
-
+  old_local_time = local_time;
+  old_local_angle = local_angle;
+  
   float angle = angleSensor.angleR(U_DEG, true);
   local_time = sync_millis();
   // Selon etat microswitch
@@ -47,13 +49,8 @@ void getAngle() {
       local_angle = f_mod(angle + offset_angle, 360) + 360;
   }
   
-  local_angle = addOffsetValue(local_angle);
 }
 
-void updateOldAngle() {
-  old_local_time = local_time;
-  old_local_angle = local_angle;
-}
 
 void reset_expected_angle(float input_angle) {
   Serial.print("reset angle to : "); Serial.println(input_angle);
@@ -65,5 +62,6 @@ void reset_expected_angle(float input_angle) {
 void compute_expected_angle(float target_speed) {
   float diff_time_seconds = (sync_millis() - millis_at_start_of_part) / 1000.0;
   expected_angle = (start_angle + diff_time_seconds * target_speed);
+  expected_angle = addOffsetValue(local_angle);
 }
 
