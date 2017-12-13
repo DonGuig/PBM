@@ -1,6 +1,6 @@
 //// SELECTION MASTER or SLAVE
 #define MASTER 1
-#define SerialNumber 1 //Used to make array with value for imprecision
+#define SerialNumber 3 //Used to make array with value for imprecision
 /*
  * ELECTRONIC CONNECTION :
  * 
@@ -51,7 +51,7 @@ unsigned long millis_at_start_of_part;
 float start_angle;
 
 // Indicates in which full 360 degrees rotation we are in
-float old_raw_angle,old_row_angle_with_offset;
+float old_raw_angle,old_row_angle_with_offset, raw_expected_angle;
 
 #if MASTER == 1
 PID servoPID(&local_angle, &motor_PWM_speed, &expected_angle, Kp, Ki, Kd, DIRECT);

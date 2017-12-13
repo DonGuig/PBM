@@ -37,7 +37,7 @@ void servoLoop() {
   if (servoPID.Compute()) { // the .Compute takes less than 1ms
     last_pid_compute_time = sync_millis();
 
-    send_master_sync_point(local_time, expected_angle);
+    send_master_sync_point(local_time, raw_expected_angle);
 
     writeSpeed(motor_PWM_speed);// !! 10ms delay with modified library
 

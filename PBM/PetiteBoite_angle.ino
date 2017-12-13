@@ -70,7 +70,7 @@ void reset_expected_angle(float reset_angle) {
 
 void compute_expected_angle() {
   float diff_time_seconds = (sync_millis() - millis_at_start_of_part) / 1000.0;
-  float raw_expected_angle = (start_angle + diff_time_seconds * goal_speed_part1);
+  raw_expected_angle = (start_angle + diff_time_seconds * goal_speed_part1);
   if (raw_expected_angle > 360)
     raw_expected_angle = 360 + start_angle + (diff_time_seconds - 360./goal_speed_part1) * goal_speed_part2;
   expected_angle = addOffsetValue(raw_expected_angle);
