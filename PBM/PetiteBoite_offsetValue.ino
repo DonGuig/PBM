@@ -44,6 +44,7 @@ float addOffsetValue(float loc_angle) {
     loc_angle += -10.0;
   else 
     loc_angle = loc_angle;  
+  loc_angle += 1.; // SAME START
 #endif
 
 #if SerialNumber == 2 // Internationale #2

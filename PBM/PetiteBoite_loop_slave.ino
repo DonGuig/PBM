@@ -26,6 +26,7 @@ void receive_slave_syncPoint(char* strAddress){
     //Serial.print(sync_millis());Serial.print(";");Serial.println(master_time);
     //Serial.println(long(sync_millis() - master_time));
     master_angle = strtod(strtok(NULL, " "), NULL);
+    master_angle = addOffsetValue(master_angle);
     new_point = true;
   }
 }
