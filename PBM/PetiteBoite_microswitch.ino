@@ -7,8 +7,13 @@ void setupMicroSwitch() {
   pinMode(microSwitchPin, INPUT);
   microSwitchState = digitalRead(microSwitchPin);
   old_microSwitchState = microSwitchState;
-  if (microSwitchState == HIGH) { goal_speed = goal_speed_part1; }
-  else { goal_speed = goal_speed_part2; }
+  if (microSwitchState == HIGH) { 
+    goal_speed = goal_speed_part1; 
+  }
+  else { 
+    goal_speed = goal_speed_part2; 
+  }
+
 }
 
 bool simpleCheckMicroSwitch() {
@@ -25,18 +30,24 @@ bool checkAndUpdateMicroSwitchState() {
       if (microSwitchState == HIGH) { //we're coming back to part1
 //        delay(10); // to avoid switch bounce when we call getAngle()
 //        getAngle();
-        local_angle = 0;        
+
+        goal_speed = goal_speed_part1;
+        reset_angles();
         changeOffset();
         updateEeprom();
 
-        goal_speed = goal_speed_part1;
+
        
 #if MASTER == 1
+        /*
         while ((local_angle < 1.0) || (local_angle > 2.0)) {
           getAngle();
+          Serial.print("angle : "); Serial.println(local_angle);
           
           delay(10);
         }
+        Serial.println("about to end send_master_end_freewheel)");
+        */
         send_master_end_freewheel();
         reset_expected_angle(local_angle);
 #else

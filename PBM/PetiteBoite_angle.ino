@@ -17,46 +17,33 @@ float getFirstAngle() {
   else {
     local_angle = f_mod(angleSensor.angleR(U_DEG, true) + offset_angle, 360);
   }
+  Serial.print("first angle : ");Serial.println(local_angle);
   old_local_angle = local_angle;
+  old_raw_angle = angleSensor.angleR(U_DEG, true);
 }
+
+void reset_angles() {
+  local_angle = 0;
+  old_local_angle = 0;
+  old_raw_angle = angleSensor.angleR(U_DEG, true);
+}
+
 
 void changeOffset() {
   //should get called when we change part
-  Serial.print(offset_angle);
-  offset_angle = 360 - angleSensor.angleR(U_DEG, true) ; //-3 = SAFETY  removed      
+  Serial.println(offset_angle);
+  offset_angle = 360 - angleSensor.angleR(U_DEG, true); //-3 = SAFETY      
 }
 
 void getAngle() {
   // Please note that this function has less than 1ms delay
-  old_local_time = local_time;
-  old_local_angle = local_angle;
-  
-  float angle = angleSensor.angleR(U_DEG, true) + offset_angle;
+
+  local_angle += added_angle();
   local_time = sync_millis();
 
-  angle = f_mod(angle, 360.);
+  old_local_time = local_time;
+  old_local_angle = local_angle;
 
-  if (angle - old_local_angle < -300) 
-    angle += 360;
-
-  local_angle = angle;
-  // Selon etat microswitch
-  /*
-  if (simpleCheckMicroSwitch() == HIGH) { // 0 - 360°, relaché
-    //Serial.println("SimpleCheck HIGH");
-    if (old_local_angle > 700) // Zone d'erreur, pour régler la transition 720° -> 0°
-      local_angle = f_mod(angle + offset_angle + 360, 720);
-    else 
-      local_angle = f_mod(angle + offset_angle, 360);
-  }
-  else { // 361 - 720°
-    //Serial.println("SimpleCheck LOW");
-    if (old_local_angle < 360) // Zone d'erreur, pour régler la transition 359° -> 361°
-      local_angle = angle + offset_angle;
-    else 
-      local_angle = f_mod(angle + offset_angle, 360) + 360;
-  }
-  */
 }
 
 
@@ -69,7 +56,33 @@ void reset_expected_angle(float input_angle) {
 
 void compute_expected_angle(float target_speed) {
   float diff_time_seconds = (sync_millis() - millis_at_start_of_part) / 1000.0;
-  expected_angle = (start_angle + diff_time_seconds * target_speed);
-  expected_angle = addOffsetValue(expected_angle);
+  float raw_expected_angle = (start_angle + diff_time_seconds * target_speed);
+  expected_angle = addOffsetValue(raw_expected_angle);
+}
+
+float added_angle() {
+  float raw_angle = angleSensor.angleR(U_DEG, true);
+
+  float added_value;
+
+  if (abs(raw_angle - old_raw_angle) <= 300.0) {
+    if ((raw_angle - old_raw_angle) >=0) {
+      added_value = f_mod(abs(raw_angle - old_raw_angle), 360);
+    }
+    else {
+      added_value = - (f_mod(abs(raw_angle - old_raw_angle), 360));
+    }
+  }
+  else {
+    if ((raw_angle - old_raw_angle) >= 0) {
+      added_value = old_raw_angle + (360 - raw_angle);
+    }
+    else {
+      added_value = raw_angle + (360 - old_raw_angle);
+    }
+  }
+
+  old_raw_angle = raw_angle;
+  return added_value;
 }
 

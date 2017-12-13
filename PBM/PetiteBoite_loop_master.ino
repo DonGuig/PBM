@@ -41,9 +41,12 @@ void servoLoop() {
 
     writeSpeed(motor_PWM_speed);// !! 10ms delay with modified library
 
-    Serial.print(local_angle);Serial.print(";");
     Serial.print(goal_speed);Serial.print(";");
+
     Serial.print(expected_angle - local_angle);Serial.print(";");
+    Serial.print(local_angle);Serial.print(";");
+    
+
     Serial.print(expected_angle);Serial.print(";");
     Serial.print(motor_PWM_speed);Serial.println(";");
 
