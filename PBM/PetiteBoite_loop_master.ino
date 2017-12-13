@@ -24,7 +24,7 @@ void servoLoop() {
       approached_end_of_part = 1; // will get reset when microswitch triggers
     }
 */
-    if (local_angle > 710 && local_angle <= 715) {
+    if (local_angle > 715 && local_angle <= 720) {
       if (!approached_end_of_part) {
         send_master_freewheel(local_time,motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
         writeSpeed(motor_PWM_speed*(goal_speed_part1/goal_speed_part2));

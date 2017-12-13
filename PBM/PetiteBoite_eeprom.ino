@@ -21,7 +21,7 @@ void updateEeprom() {
   if (f_mod((EEPROM.get(0,offset_eeprom) - offset_angle),360) > 5)
     init_eeprom = true;  
   if (init_eeprom == true) {        
-    Serial.print(" (re)Write EEPROM : ");        
+    Serial.println(" (re)Write EEPROM : ");        
     EEPROM.put(0,offset_angle);
     EEPROM.commit();
     init_eeprom = false;

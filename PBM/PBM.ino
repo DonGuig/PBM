@@ -30,6 +30,9 @@ double master_angle;
 // Global Variable of angle & timing
 unsigned long local_time, old_local_time;
 double local_angle, old_local_angle;
+// To count 0 -> 720
+int laps_number = 1;
+unsigned long laps_timer;
 
 bool approached_end_of_part = 0;
 
@@ -48,7 +51,7 @@ unsigned long millis_at_start_of_part;
 float start_angle;
 
 // Indicates in which full 360 degrees rotation we are in
-float old_raw_angle;
+float old_raw_angle,old_row_angle_with_offset;
 
 #if MASTER == 1
 PID servoPID(&local_angle, &motor_PWM_speed, &expected_angle, Kp, Ki, Kd, DIRECT);
@@ -82,9 +85,10 @@ void setup() {
   getAngle();
   writeSpeed(start_PWM_speed);
   delay(1000);
-  getAngle();
   
+  getAngle(); 
   reset_expected_angle(local_angle);
+  
   servoPID.SetOutputLimits(0.5, 7.0);
 
   // We're doing the following because of the way the servo_loop of the slave is made (timing)

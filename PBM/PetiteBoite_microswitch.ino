@@ -26,29 +26,21 @@ bool checkAndUpdateMicroSwitchState() {
 // HERE WE SHOULD PUT EVERYTHING THAT HAS TO HAPPEN WHEN THE MICROSWITCH CHANGES STATE !!!!
   if (microSwitchState != old_microSwitchState) {
       Serial.print("microswitch CHANGE @ "); Serial.println(local_angle);
+      delay(5);
+      microSwitchState = digitalRead(microSwitchPin);
       
       if (microSwitchState == HIGH) { //we're coming back to part1
-//        delay(10); // to avoid switch bounce when we call getAngle()
+        Serial.println("COMMING_BACK_TO_1");
 //        getAngle();
-
-//        goal_speed = goal_speed_part1;
-        reset_angles();
-        changeOffset();
+        reset_laps();
+        reset_offset();
         updateEeprom();
 
 
        
 #if MASTER == 1
-        /*
-        while ((local_angle < 1.0) || (local_angle > 2.0)) {
-          getAngle();
-          Serial.print("angle : "); Serial.println(local_angle);
-          
-          delay(10);
-        }
-        Serial.println("about to end send_master_end_freewheel)");
-        */
         send_master_end_freewheel();
+        getAngle();
         reset_expected_angle(local_angle);
 #else
         delay(10);
@@ -62,26 +54,7 @@ bool checkAndUpdateMicroSwitchState() {
 
 
       else { // we're entering part2
-//        goal_speed = goal_speed_part2;
 
-        delay(10); // to avoid switch bounce when we call getAngle()
-
-        getAngle();
-        
-#if MASTER == 1        
-/*
-        while (local_angle < 361) {
-          getAngle();
-          
-          delay(10);
-        }
-        send_master_end_freewheel();
-*/
-
- //       reset_expected_angle(local_angle);
-#else
-        delay(10);
-#endif
       }
 
     // we signify that we got out of the "end of part" zone
