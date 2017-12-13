@@ -39,11 +39,12 @@ bool checkAndUpdateMicroSwitchState() {
 
        
 #if MASTER == 1
-        send_master_end_freewheel();
+        //send_master_end_freewheel();
         getAngle();
         reset_expected_angle(local_angle);
 #else
-        delay(10);
+        //delay(10);
+        getAngle();
         checkWifi(); // this will reboot if the device disconnected
 #endif
       // we reset the PID
