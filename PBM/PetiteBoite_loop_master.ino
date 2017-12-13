@@ -1,77 +1,55 @@
-// fonction de synchro locale + Envoi de la position au slave.
+//// fonction de synchro locale + Envoi de la position au slave.
 #if MASTER == 1 // UNIQUEMENT POUR LE MASTER
 
-unsigned long old_local_time_for_udp;
-unsigned long refresh_time_for_udp = 150;
+void servoLoop() {
 
-void syncPointLoop(){
-  if ((sync_millis() - old_local_time_for_udp) > refresh_time_for_udp) {
-    measureAngle();
-    send_master_sync_point(measurement_time, measurement_angle); 
+  if ((sync_millis() - last_pid_compute_time ) > PID_sample_time - 3) { // Servo LOOP
+    //NOTE : we only update the angle measurement if we're 3ms from PID computing
 
-    old_local_time_for_udp = sync_millis();
+    getAngle();
+    compute_expected_angle();
+  }
+
+    //When we're getting very close to the change of part
+    //we disengage the PID control
+    // This way if the master makes it to the next part before the slave, it won't impact it
+    // This will get back to AUTOMATIC once the switch is triggered
+/*
+    if (local_angle > 350 && local_angle <= 355) {
+      if (!approached_end_of_part) {
+        send_master_freewheel(local_time,motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
+        writeSpeed(motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
+        servoPID.SetMode(MANUAL);
+      }
+      approached_end_of_part = 1; // will get reset when microswitch triggers
+    }
+*/
+    if (local_angle > 715 && local_angle <= 720) {
+      if (!approached_end_of_part) {
+        send_master_freewheel(local_time,motor_PWM_speed*(goal_speed_part2/goal_speed_part1));
+        writeSpeed(motor_PWM_speed*(goal_speed_part1/goal_speed_part2));
+        servoPID.SetMode(MANUAL);
+      }
+      approached_end_of_part = 1;
+    }
+
+
+  if (servoPID.Compute()) { // the .Compute takes less than 1ms
+    last_pid_compute_time = sync_millis();
+
+    send_master_sync_point(local_time, expected_angle);
+
+    writeSpeed(motor_PWM_speed);// !! 10ms delay with modified library
+
+//    Serial.print(goal_speed);Serial.print(";");
+
+    Serial.print(expected_angle - local_angle);Serial.print(";");
+    Serial.print(local_angle);Serial.print(";");
     
-    if (local_angle < 5) {
-      refresh_time_for_udp = 50;
-    }
-    else {
-      refresh_time_for_udp = 250;
-    }
-      // CSV FILE, interessant pour des tableaux/courbes
-//    Serial.print(local_time);Serial.print(";");Serial.print(diff_time);Serial.print(";");
 
-
-    Serial.print(goal_speed);Serial.print(";");
-    //Serial.print(measurement_angle);Serial.print(";");//Serial.print(diff_angle());Serial.print(";");
-    Serial.print(1000.0 * statistical_slope);Serial.print(";");
-    Serial.print(measurement_speed_feedback);Serial.print(";");
-    Serial.print(next_speed);Serial.print(";");  
+    Serial.print(expected_angle);Serial.print(";");
     Serial.print(motor_PWM_speed);Serial.println(";");
 
-
-    // DEBUG
-//    Serial.print("angle "); Serial.print(local_angle);
-//        Serial.print(" old_local_angle "); Serial.print(old_local_angle);
-//        Serial.print(" angle_diff ");Serial.print(diff_angle());
-//        Serial.print(" temps_diff ");Serial.print(diff_time);
-//        Serial.print(" speed_feedback : ");Serial.print(speed_feedback());
-//        Serial.print(" goal_speed ");Serial.print(goal_speed);
-//        Serial.print(" acceleration ");Serial.print(abs(acceleration()));
-//    Serial.print(" send speed : ");Serial.println(motor_PWM_speed);
-//    Serial.print(" voltage : ");Serial.println(batteryVoltage); 
-  }
-}
-
-
-void servoLoop() {
-  if ((sync_millis() - old_local_time) > 150) { // Servo LOOP           
-    getAngle();
-
-    enqueue_and_rotate_array(speed_fb_array, speed_avg_length, speed_feedback());
-
-    //Serial.print("Avg speed_feedback : "); Serial.println(array_average(speed_fb_array, speed_avg_length));
-    compute_statistics(speed_fb_array, speed_avg_length, 0);
-
-    //print_array(speed_fb_array, speed_avg_length);
-    //Serial.print(next_speed);Serial.print(";");
-    //Serial.print(statistical_slope);Serial.println(";");
-
-    float input_speed = weighted_average(next_speed, statistical_slope, 100);
-
-  if (diff_angle() > 0.1 && diff_angle() < 20) { // mesure error or near 360
-     
-    writeSpeed(motor_PWM_speed + servo_speed_step());   
-  }
-
-  else {
-    Serial.print("MESUREMENT ERROR : ");
-    //Serial.print("diff_angle ");Serial.print(diff_angle());
-    //Serial.print(" acceleration ");Serial.print(acceleration());
-    Serial.println();
-  }  
-
-
-  updateOldAngle();
   }
 }
 
@@ -79,71 +57,17 @@ float weighted_average(float a, float b, int percentage_of_a) {
   return (((percentage_of_a * a) + ((100 - percentage_of_a) * b)) / 100);
 }
 
-float servo_speed_step() {
-  float step_factor = 0.06;
-  float slope_factor = 0.0;
-
-  float max_step = 0.1;
-
-  float step = step_factor * ((goal_speed - next_speed) + slope_factor * statistical_slope);
-
-  if (step > max_step) step = max_step;
-  else if (step < (- max_step)) step = (-max_step);
-
-  return step;
-
+void send_master_sync_point(unsigned long loc_time, float loc_angle) {
+  sendUdp("SYNC_POINT " + String(loc_time) + " " + String(loc_angle));
 }
 
-/*
-float servo_speed_step(float input_speed) {
-  float servo_step = 0;
-  if (input_speed < goal_speed) {
-      if (input_speed < goal_speed * 0.90) {
-        servo_step = 0.08;
-      }
-      else if (input_speed < goal_speed * 0.95) {
-        servo_step = 0.06;
-      }
-      else if (input_speed < goal_speed * 0.96) {
-        servo_step = 0.05;
-      }
-      else if (input_speed < goal_speed * 0.97) {
-        servo_step = 0.04;
-      }
-      else if (input_speed < goal_speed * 0.98) {
-        servo_step = 0.03;
-      }
-      else if (input_speed < goal_speed * 0.99) {
-        servo_step = 0.02;
-      }
-      else
-        servo_step = 0.01;
-    }  
-  else if (input_speed > goal_speed) {
-      if (input_speed > goal_speed * 1.10) {
-        servo_step = -0.08;
-      }
-      else if (input_speed > goal_speed * 1.05) {
-        servo_step = -0.06;
-      }
-      else if (input_speed > goal_speed * 1.04) {
-        servo_step = -0.05;
-      }
-      else if (input_speed > goal_speed * 1.03) {
-        servo_step = -0.04;
-      }
-      else if (input_speed > goal_speed * 1.02) {
-        servo_step = -0.03;
-      }
-      else if (input_speed > goal_speed * 1.01) {
-        servo_step = -0.02;
-      }
-      else 
-        servo_step = -0.01;
-    }
-    return servo_step;
+void send_master_freewheel(unsigned long loc_time, float freewheel_speed) {
+  Serial.println("START_FREEWHEEL");
+  sendUdp("FREEWHEEL " + String(loc_time) + " " + String(freewheel_speed));
 }
-*/
 
-
+void send_master_end_freewheel() {
+  Serial.println("END MASTER FREEWHEEL");
+  sendUdp("END_FREEWHEEL");
+}
 #endif

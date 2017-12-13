@@ -1,4 +1,4 @@
-// SYNCHRONISATION temporelle (de millis()) entre le slave et le master.
+//// SYNCHRONISATION temporelle (de millis()) entre le slave et le master.
 // inspiré de https://en.wikipedia.org/wiki/Precision_Time_Protocol
 
 /*
@@ -24,32 +24,48 @@ unsigned long sync_millis() {
 #endif
 }
 
-void slave_ask_for_resync() { // Appel du slave au master 
+void slave_resync_procedure() {
+  // BLOCKING : will only stop when procedure is complete !
   Serial.println("RESYNC");
   slave_sync = false;
   sendUdp("RESYNC"); // we want to keep asking in case the first request got lost
   int i = 0;
   while (!slave_sync) {    
     receiveUdp();
-    if (i > 10000) { // Timeout to send resync
+    delay(1);
+    if (i > 1000) { // Timeout to send resync
       sendUdp("RESYNC");
       i = 0;
     }
     i++;
   }
-  // slave_sync = false;
 }
 
 // FONCTIONS APPELÉ PAR UDP_RECEIVE DANS WIFI
 
 void receive_master_resync(char *udpStrAddress) {
   if (strcmp(udpStrAddress,"RESYNC") == 0) {
+    // BLOCKING WITH TIMEOUT
     Serial.println("Slaved asked for a resync");
+    slave_sync = false;
+    send_master_t1();
+    int i = 0;
+    while (!slave_sync) {    
+      receiveUdp();
+      delay(1);
+      if (i > 1000) { // Timeout for the procedure
+        return;
+      }
+      i++;
+    }
+  }
+}
+
+void send_master_t1() {
     t1 = millis();
     sendUdp("T1"); 
     // we do not need to send the value of t1, 
     // as offset calculation will be done in the master
-  }
 }
 
 void receive_slave_t1(char *udpStrAddress) {

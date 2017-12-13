@@ -1,4 +1,4 @@
-//Consommation : 200 mA
+//Consommation : 200 mA //
 
 const int batteryPin  = A0;
 float batteryVoltage;

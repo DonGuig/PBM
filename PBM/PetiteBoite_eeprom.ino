@@ -1,4 +1,4 @@
-// Permet d'enregistré en dur la valeur de offset_angle pour accelerer le demarage
+//// Permet d'enregistré en dur la valeur de offset_angle pour accelerer le demarage
 #include <EEPROM.h>
 
 bool init_eeprom = false;
@@ -17,12 +17,11 @@ void setupEeprom() {
   }
 }
 
-
 void updateEeprom() {
-  if (f_mod((EEPROM.get(0,offset_eeprom) - offset_angle),360) > 5)
+  if (abs(EEPROM.get(0,offset_eeprom) - offset_angle) > 0.5)
     init_eeprom = true;  
   if (init_eeprom == true) {        
-    Serial.print(" (re)Write EEPROM : ");        
+    Serial.println(" (re)Write EEPROM : ");        
     EEPROM.put(0,offset_angle);
     EEPROM.commit();
     init_eeprom = false;
