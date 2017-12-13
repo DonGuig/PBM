@@ -20,8 +20,6 @@ float start_PWM_speed = 2.884;
 double motor_PWM_speed = start_PWM_speed; // init PWM (0-100)
 float max_PWM_speed = 5;
 
-double goal_speed = goal_speed_part1; // will get overwritten during setup
-
 float offset_angle = 0; // Depending of magnet position, stored in EEPROM
 
 // Slave receive point from master

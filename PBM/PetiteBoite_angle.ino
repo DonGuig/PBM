@@ -46,7 +46,6 @@ void getAngle() {
 
 }
 
-
 void reset_expected_angle(float input_angle) {
   Serial.print("reset angle to : "); Serial.println(input_angle);
   start_angle = input_angle;
@@ -54,9 +53,11 @@ void reset_expected_angle(float input_angle) {
   millis_at_start_of_part = sync_millis();
 }
 
-void compute_expected_angle(float target_speed) {
+void compute_expected_angle() {
   float diff_time_seconds = (sync_millis() - millis_at_start_of_part) / 1000.0;
-  float raw_expected_angle = (start_angle + diff_time_seconds * target_speed);
+  float raw_expected_angle = (start_angle + diff_time_seconds * goal_speed_part1);
+  if (raw_expected_angle > 360)
+    raw_expected_angle = 360 + start_angle + (diff_time_seconds - 360./goal_speed_part1) * goal_speed_part2;
   expected_angle = addOffsetValue(raw_expected_angle);
 }
 
@@ -66,7 +67,7 @@ float added_angle() {
   float added_value;
 
   if (abs(raw_angle - old_raw_angle) <= 300.0) {
-    if ((raw_angle - old_raw_angle) >=0) {
+    if ((raw_angle - old_raw_angle) >= 0) {
       added_value = f_mod(abs(raw_angle - old_raw_angle), 360);
     }
     else {

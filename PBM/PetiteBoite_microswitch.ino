@@ -7,13 +7,13 @@ void setupMicroSwitch() {
   pinMode(microSwitchPin, INPUT);
   microSwitchState = digitalRead(microSwitchPin);
   old_microSwitchState = microSwitchState;
-  if (microSwitchState == HIGH) { 
+/*  if (microSwitchState == HIGH) { 
     goal_speed = goal_speed_part1; 
   }
   else { 
     goal_speed = goal_speed_part2; 
   }
-
+*/
 }
 
 bool simpleCheckMicroSwitch() {
@@ -31,7 +31,7 @@ bool checkAndUpdateMicroSwitchState() {
 //        delay(10); // to avoid switch bounce when we call getAngle()
 //        getAngle();
 
-        goal_speed = goal_speed_part1;
+//        goal_speed = goal_speed_part1;
         reset_angles();
         changeOffset();
         updateEeprom();
@@ -62,7 +62,7 @@ bool checkAndUpdateMicroSwitchState() {
 
 
       else { // we're entering part2
-        goal_speed = goal_speed_part2;
+//        goal_speed = goal_speed_part2;
 
         delay(10); // to avoid switch bounce when we call getAngle()
 
@@ -78,7 +78,7 @@ bool checkAndUpdateMicroSwitchState() {
         send_master_end_freewheel();
 */
 
-        reset_expected_angle(local_angle);
+ //       reset_expected_angle(local_angle);
 #else
         delay(10);
 #endif

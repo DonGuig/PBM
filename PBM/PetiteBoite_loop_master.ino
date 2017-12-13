@@ -7,7 +7,7 @@ void servoLoop() {
     //NOTE : we only update the angle measurement if we're 3ms from PID computing
 
     getAngle();
-    compute_expected_angle(goal_speed);
+    compute_expected_angle();
   }
 
     //When we're getting very close to the change of part
@@ -41,7 +41,7 @@ void servoLoop() {
 
     writeSpeed(motor_PWM_speed);// !! 10ms delay with modified library
 
-    Serial.print(goal_speed);Serial.print(";");
+//    Serial.print(goal_speed);Serial.print(";");
 
     Serial.print(expected_angle - local_angle);Serial.print(";");
     Serial.print(local_angle);Serial.print(";");
