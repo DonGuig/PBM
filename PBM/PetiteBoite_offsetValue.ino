@@ -1,50 +1,81 @@
 // CALIBRATION OF EACH MUSIC BOX
 
 float addOffsetValue(float loc_angle) {
+
 #if SerialNumber == 1 // Marseilleise #1
+
   if (loc_angle < 28)
-    loc_angle += -1.5;
-  else if (loc_angle < 44 )
+    loc_angle += -1.2;
+  else if (loc_angle < 35 )
     loc_angle += -1;
-  else if (loc_angle < 80)
+  else if (loc_angle < 44 )
+    loc_angle += -0.2;
+  else if (loc_angle < 60)
     loc_angle += 0;
+  else if (loc_angle < 66)
+    loc_angle += 0.3;
+  else if (loc_angle < 80)
+    loc_angle += 0.9;
   else if (loc_angle < 100)
     loc_angle += 1.25;
-  else if (loc_angle < 144)
-    loc_angle += 1.5;
+  else if (loc_angle < 125)
+    loc_angle += 2.1;
+  else if (loc_angle < 137)
+    loc_angle += 1.8;
+  else if (loc_angle < 142)
+    loc_angle += -0.2;
   else if (loc_angle < 183)
-    loc_angle += 0;
+    loc_angle += 0.5;
+  else if (loc_angle < 211)
+    loc_angle += -0.4;
+  else if (loc_angle < 229)
+    loc_angle += -1.1;
   else if (loc_angle < 246)
-    loc_angle += -0.5;
-  else if (loc_angle < 276)
+    loc_angle += -1.1;
+  else if (loc_angle < 264)
     loc_angle += 0;
+  else if (loc_angle < 276)
+    loc_angle += -0.5;
   else if (loc_angle < 310)
     loc_angle += -0.5;
-  else if (loc_angle < 361)
+  else if (loc_angle < 336)
     loc_angle += -1;
-  else if (loc_angle < 392)
-    loc_angle += -8.5;
+  else if (loc_angle < 337)
+    loc_angle += -1.6;
+  else if (loc_angle < 342)
+    loc_angle += -1.9;
+  else if (loc_angle < 354)
+    loc_angle += -2.0;
+  else if (loc_angle < 390)
+    loc_angle += -9.7;
   else if (loc_angle < 421)
-    loc_angle += -8.25;
+    loc_angle += -8.75;
   else if (loc_angle < 443)
-    loc_angle += -7.;
+    loc_angle += -7.9;
+  else if (loc_angle < 457)
+    loc_angle += -7.5;
   else if (loc_angle < 482)
-    loc_angle += -6;
+    loc_angle += -6.8;
+  else if (loc_angle < 512)
+    loc_angle += -6.5;
   else if (loc_angle < 530)
-    loc_angle += -7;
-  else if (loc_angle < 555)
+    loc_angle += -7.9;
+  else if (loc_angle < 552)
     loc_angle += -8;  
-  else if (loc_angle < 566)
-    loc_angle += -11.5;
+  else if (loc_angle < 578)
+    loc_angle += -9.0;
   else if (loc_angle < 600)
-    loc_angle += -10.5;
-  else if (loc_angle < 702)
+    loc_angle += -9.6;
+  else if (loc_angle < 695)
     loc_angle += -8.5;
+  else if (loc_angle < 710)
+    loc_angle += -8.7;
   else if (loc_angle < 730)
-    loc_angle += -10.0;
+    loc_angle += -9.5;
   else 
     loc_angle = loc_angle;  
   loc_angle += 1.; // SAME START
+
 #endif
 
 #if SerialNumber == 2 // Internationale #2

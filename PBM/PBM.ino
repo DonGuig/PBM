@@ -1,6 +1,6 @@
 //// SELECTION MASTER or SLAVE
-#define MASTER 1
-#define SerialNumber 3 //Used to make array with value for imprecision
+#define MASTER 0
+#define SerialNumber 1 //Used to make array with value for imprecision
 /*
  * ELECTRONIC CONNECTION :
  * 
@@ -38,6 +38,8 @@ bool approached_end_of_part = 0;
 
 // variables used by PID library
 double Kp=1.0, Ki=0.5, Kd=0.00;
+
+
 
 int PID_sample_time = 50; // Set to 105ms because writeSpeed takes 100ms
 // due to the way PID_library is coded, having a sample time below 100ms could
