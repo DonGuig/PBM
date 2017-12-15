@@ -70,28 +70,44 @@ float addOffsetValue(float loc_angle) {
 
 #if SerialNumber == 3 // Marseillaise #3
 // time between switch and 1st note : 1880ms
-  if (loc_angle < 140)
+  if (loc_angle < 37)
     loc_angle += 0;
+  else if (loc_angle < 92)
+    loc_angle += 0.3;
+  else if (loc_angle < 129)
+    loc_angle += -0.0;
+  else if (loc_angle < 142)
+    loc_angle += -0.6;
   else if (loc_angle < 154)
     loc_angle += -0.8;
+  else if (loc_angle < 176)
+    loc_angle += -1.1;
   else if (loc_angle < 214)
     loc_angle += -1.4;
-  else if (loc_angle < 240)
+  else if (loc_angle < 256)
     loc_angle += -0.8;
   else if (loc_angle < 275)
-    loc_angle += -0.5;
+    loc_angle += -0.9;
   else if (loc_angle < 305)
     loc_angle += -1.1;
   else if (loc_angle < 350)
     loc_angle += -1.5; 
-  else if (loc_angle < 432)
+  else if (loc_angle < 360)
+    loc_angle += -4.8; 
+  else if (loc_angle < 370)
+    loc_angle += -8.2;
+  else if (loc_angle < 437)
     loc_angle += -8.4;
-  else if (loc_angle < 450)
-    loc_angle += -7.7;
+  else if (loc_angle < 454)
+    loc_angle += -8.4;
+  else if (loc_angle < 477)
+    loc_angle += -8.7;
   else if (loc_angle < 529)
     loc_angle += -8.9;
   else if (loc_angle < 585)
-    loc_angle += -9.7;
+    loc_angle += -9.4;
+  else if (loc_angle < 596)
+    loc_angle += -9.2;
   else if (loc_angle < 666)
     loc_angle += -8.9;
   else if (loc_angle < 800)

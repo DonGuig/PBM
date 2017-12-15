@@ -44,6 +44,7 @@ void servoLoop() {
 //    Serial.print(goal_speed);Serial.print(";");
 
     Serial.print(expected_angle - local_angle);Serial.print(";");
+    Serial.print(raw_expected_angle);Serial.print(";");
     Serial.print(local_angle);Serial.print(";");
     
 
