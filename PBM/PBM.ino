@@ -1,6 +1,6 @@
 //// SELECTION MASTER or SLAVE
-#define MASTER 0
-#define SerialNumber 1 //Used to make array with value for imprecision
+#define MASTER 1
+#define SerialNumber 2 //Used to make array with value for imprecision
 /*
  * ELECTRONIC CONNECTION :
  * 
@@ -18,7 +18,7 @@ float goal_speed_part2 = 11.22;
 // Angle & Speed Variable
 float start_PWM_speed = 2.884;
 double motor_PWM_speed = start_PWM_speed; // init PWM (0-100)
-float max_PWM_speed = 5;
+float max_PWM_speed = 4.0;
 
 float offset_angle = 0; // Depending of magnet position, stored in EEPROM
 
@@ -91,7 +91,7 @@ void setup() {
   getAngle(); 
   reset_expected_angle(local_angle);
   
-  servoPID.SetOutputLimits(0.5, 7.0);
+  servoPID.SetOutputLimits(0.5, 4.0);
 
   // We're doing the following because of the way the servo_loop of the slave is made (timing)
   #if MASTER == 1
