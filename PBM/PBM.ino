@@ -1,6 +1,6 @@
 //// SELECTION MASTER or SLAVE
 #define MASTER 1
-#define SerialNumber 2 //Used to make array with value for imprecision
+#define SerialNumber 4 //Used to make array with value for imprecision
 /*
  * ELECTRONIC CONNECTION :
  * 

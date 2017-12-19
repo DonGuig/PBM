@@ -79,22 +79,46 @@ float addOffsetValue(float loc_angle) {
 #endif
 
 #if SerialNumber == 2 // Internationale #2
-  if (loc_angle < 180)
+  if (loc_angle < 22)
+    loc_angle += 0.5;
+  if (loc_angle < 80)
+    loc_angle += -0.5;
+  if (loc_angle < 141)
+    loc_angle += 0.5;
+  if (loc_angle < 157)
     loc_angle += 0;
-  else if (loc_angle < 305)
-    loc_angle -= 0.5;
+  if (loc_angle < 180)
+    loc_angle += -0.2;
+  else if (loc_angle < 289)
+    loc_angle += -0.5;
+  else if (loc_angle < 307)
+    loc_angle += -0.4;
   else if (loc_angle < 361)
-    loc_angle -= 1;
+    loc_angle += -1;
+  else if (loc_angle < 405)
+    loc_angle += -4.4;
   else if (loc_angle < 423)
-    loc_angle -= 4;
+    loc_angle += -4;
   else if (loc_angle < 445)
-    loc_angle -= 3.5;
+    loc_angle += -4.5;
+  else if (loc_angle < 449)
+    loc_angle += -3.8;
   else if (loc_angle < 510)
-    loc_angle -= 3;
+    loc_angle += -3.5;
+  else if (loc_angle < 534)
+    loc_angle += -3.8;
+  else if (loc_angle < 597)
+    loc_angle += -4.1;
+  else if (loc_angle < 609)
+    loc_angle += -4.4;
+  else if (loc_angle < 674)
+    loc_angle += -4.0;
   else if (loc_angle < 730)
-    loc_angle -= 3.5;
+    loc_angle += -4.3;
   else 
     loc_angle += 0;
+
+  loc_angle += -4.7; // SAME START
 
 #endif
 
@@ -152,20 +176,53 @@ float addOffsetValue(float loc_angle) {
     loc_angle += 0;
   else if (loc_angle < 24)
     loc_angle += -0.4;
-  else if (loc_angle < 90)
+  else if (loc_angle < 72)
     loc_angle += -0.2;
-  else if (loc_angle < 260)
+  else if (loc_angle < 90)
+    loc_angle += -0.5;
+  else if (loc_angle < 116)
+    loc_angle += -0.7;
+  else if (loc_angle < 157)
     loc_angle += -1.0;
+  else if (loc_angle < 167)
+    loc_angle += -0.7;
+  else if (loc_angle < 255)
+    loc_angle += -1.2;
+  else if (loc_angle < 288)
+    loc_angle += -1.8;
+  else if (loc_angle < 310)
+    loc_angle += -2.2;
+  else if (loc_angle < 335)
+    loc_angle += -1.8;
   else if (loc_angle < 360)
-    loc_angle += -0.8;
+    loc_angle += -2.3;
+  else if (loc_angle < 397)
+    loc_angle += -4.3;
   else if (loc_angle < 421)
     loc_angle += -4.4;
   else if (loc_angle < 440) 
-    loc_angle += -4.7;
-  else if (loc_angle < 720)
+    loc_angle += -4.5;
+  else if (loc_angle < 515)
+    loc_angle += -4.8;
+  else if (loc_angle < 538)
+    loc_angle += -5.1;
+  else if (loc_angle < 557)
+    loc_angle += -4.8;
+  else if (loc_angle < 584)
     loc_angle += -5.2;
+  else if (loc_angle < 622)
+    loc_angle += -4.9;
+  else if (loc_angle < 655)
+    loc_angle += -5.3;
+  else if (loc_angle < 684)
+    loc_angle += -5.6;
+  else if (loc_angle < 720)
+    loc_angle += -5.5;
   else 
-    loc_angle = loc_angle;  
+    loc_angle = loc_angle;
+
+  loc_angle += -2.8; // SAME START
+
 #endif
 
 
