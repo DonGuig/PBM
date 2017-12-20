@@ -46,6 +46,15 @@ bool checkAndUpdateMicroSwitchState() {
         //delay(10);
         getAngle();
         checkWifi(); // this will reboot if the device disconnected
+        Serial.println("Loop waiting for master to cross 0");
+        while((abs(local_angle - master_angle) > 650)) {
+          writeSpeed(1.4);
+          getAngle();
+          receiveUdp();
+          delay(5);
+        }
+        Serial.println("End loop");
+
 #endif
       // we reset the PID
       servoPID.SetMode(MANUAL);

@@ -172,9 +172,7 @@ float addOffsetValue(float loc_angle) {
 #endif
 
 #if SerialNumber == 4 // International #4
-  if (loc_angle < 2)
-    loc_angle += 0;
-  else if (loc_angle < 24)
+  if (loc_angle < 24)
     loc_angle += -0.4;
   else if (loc_angle < 72)
     loc_angle += -0.2;
@@ -186,12 +184,16 @@ float addOffsetValue(float loc_angle) {
     loc_angle += -1.0;
   else if (loc_angle < 167)
     loc_angle += -0.7;
+  else if (loc_angle < 184)
+    loc_angle += -1.2;
+  else if (loc_angle < 204)
+    loc_angle += -0.8;
   else if (loc_angle < 255)
     loc_angle += -1.2;
   else if (loc_angle < 288)
     loc_angle += -1.8;
   else if (loc_angle < 310)
-    loc_angle += -2.2;
+    loc_angle += -2.0;
   else if (loc_angle < 335)
     loc_angle += -1.8;
   else if (loc_angle < 360)
@@ -205,7 +207,7 @@ float addOffsetValue(float loc_angle) {
   else if (loc_angle < 515)
     loc_angle += -4.8;
   else if (loc_angle < 538)
-    loc_angle += -5.1;
+    loc_angle += -4.9;
   else if (loc_angle < 557)
     loc_angle += -4.8;
   else if (loc_angle < 584)
@@ -215,7 +217,7 @@ float addOffsetValue(float loc_angle) {
   else if (loc_angle < 655)
     loc_angle += -5.3;
   else if (loc_angle < 684)
-    loc_angle += -5.6;
+    loc_angle += -5.5;
   else if (loc_angle < 720)
     loc_angle += -5.5;
   else 
