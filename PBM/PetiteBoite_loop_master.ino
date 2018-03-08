@@ -71,4 +71,26 @@ void send_master_end_freewheel() {
   Serial.println("END MASTER FREEWHEEL");
   sendUdp("END_FREEWHEEL");
 }
+
+void send_master_stop_next_loop() {
+  Serial.println("sending STOP_NEXT_LOOP");
+  sendUdp("STOP_NEXT_LOOP");
+}
+
+void send_master_play() {
+  Serial.println("sending PLAY");
+  sendUdp("PLAY");
+}
+
+void send_master_begin() { // first play after the unit got turned on
+  Serial.println("sending BEGIN");
+  sendUdp("BEGIN");
+}
+
+void receive_master_ready_to_begin(char* strAddress) {
+  if (strcmp(strAddress,"READY_TO_BEGIN") == 0) {
+    Serial.println("Slave ready to begin");
+    slave_ready_to_begin = true;
+  }
+}
 #endif

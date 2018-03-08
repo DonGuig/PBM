@@ -28,12 +28,18 @@ char incomingPacket[255];
 void setupWifi() {
 #if MASTER==1
   Serial.println("*** MASTER ***");
-  
+
 //  WiFi.setAutoConnect(false);
   WiFi.setAutoConnect(false);
   WiFi.softAPConfig(local_IP, gateway, subnet);    
   WiFi.softAP(ssid, password, 1, 1);  //SSID, PASS, CANAL, CACHÉ
-   
+
+/*
+  if ( MDNS.begin ( host ) ) {
+    Serial.println ( "MDNS responder started" );
+  }
+*/
+
 #else
 
   Serial.println("*** SLAVE ***");
@@ -53,7 +59,7 @@ void setupWifi() {
   Serial.println("");Serial.println("WiFi connected");
  
 #endif
-  WiFi.setOutputPower(0);
+  WiFi.setOutputPower(20);
   Serial.println("WIFI SETUP INFORMATION");
   WiFi.printDiag(Serial);
   Serial.println("END WIFI SETUP INFORMATION");
@@ -82,12 +88,16 @@ void routeUdp() {
   receive_master_resync(strAddress); //ptp
   receive_master_isSync(strAddress); //ptp
   receive_master_t1pt2(strAddress); //ptp
+  receive_master_ready_to_begin(strAddress);
 #else
   receive_slave_clock_offset(strAddress); //ptp
   receive_slave_t1(strAddress); //ptp
-    receive_slave_syncPoint(strAddress); // on slave_loop
+  receive_slave_syncPoint(strAddress); // on slave_loop
   receive_slave_freewheel_syncpoint(strAddress); // on slave_loop
   receive_slave_end_freewheel(strAddress); // on slave_loop
+  receive_slave_stop_next_loop(strAddress);
+  receive_slave_play(strAddress);
+  receive_slave_begin(strAddress);
 #endif
 }
 

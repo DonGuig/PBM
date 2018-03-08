@@ -53,4 +53,31 @@ void receive_slave_end_freewheel(char* strAddress){
   }
 }
 
+void receive_slave_stop_next_loop(char* strAddress) {
+  if (strcmp(strAddress,"STOP_NEXT_LOOP") == 0) {
+    Serial.println("Master requested STOP");
+    Serial.println("Will stop at NEXT microswitch");
+    will_stop_at_microswitch = true;
+  }
+}
+
+void receive_slave_play(char* strAddress) {
+  if (strcmp(strAddress,"PLAY") == 0) {
+    Serial.println("Master requested PLAY");
+    will_stop_at_microswitch = false;
+  }
+}
+
+void send_slave_ready_to_begin() {
+  Serial.println("Sending READY_TO_BEGIN to master");
+  sendUdp("READY_TO_BEGIN");
+}
+
+void receive_slave_begin(char* strAddress) { // This is when the units got turned on
+  if (strcmp(strAddress,"BEGIN") == 0) {
+    Serial.println("Received_order_to_begin");
+    slave_begin = true;
+  }
+}
+
 #endif

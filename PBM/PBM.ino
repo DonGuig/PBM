@@ -1,6 +1,6 @@
 //// SELECTION MASTER or SLAVE
-#define MASTER 0
-#define SerialNumber 2 //Used to make array with value for imprecision
+#define MASTER 1
+#define SerialNumber 3 //Used to make array with value for inaccuracy
 /*
  * ELECTRONIC CONNECTION :
  * 
@@ -55,6 +55,25 @@ float start_angle;
 // Indicates in which full 360 degrees rotation we are in
 float old_raw_angle,old_row_angle_with_offset, raw_expected_angle;
 
+// Variables for implementing playback modes
+// 0 = infinite loop
+// 1 = 1 loop every 5 min
+// 2 = 1 loop every hour
+int playback_mode = 0;
+String playback_mode_char = String();
+// these variables to abstract modes 1 and 2
+int number_of_loops_between_pauses = 2;
+int loop_count = 0;
+int pause_between_loops = 300; // in seconds
+unsigned int loops_before_end_of_startup_phase = 2;
+bool pause = false;
+unsigned long millis_at_start_of_pause = 0;
+bool will_stop_at_microswitch = false; // for the slave
+
+// For the beginning procedure (get both boxes at the start of the score)
+bool slave_ready_to_begin = false;
+bool slave_begin = false;
+
 #if MASTER == 1
 PID servoPID(&local_angle, &motor_PWM_speed, &expected_angle, Kp, Ki, Kd, DIRECT);
 #else
@@ -74,22 +93,16 @@ void setup() {
   
   setupEeprom();
 
-  setupMicroSwitch();
+  configWebPage();
 
-  setupAngle();
+  setupMicroSwitch();
 
   setupUdp();
 
-  #if MASTER == 0
-  slave_resync_procedure();
-  #endif
+  //getAngle();
+  //writeSpeed(start_PWM_speed);
+  //delay(1000);
 
-  getAngle();
-  writeSpeed(start_PWM_speed);
-  delay(1000);
-  
-  getAngle(); 
-  reset_expected_angle(local_angle);
   
   servoPID.SetOutputLimits(0.5, 4.0);
 
@@ -100,7 +113,19 @@ void setup() {
   servoPID.SetSampleTime(PID_sample_time-10);
   #endif
 
+  // will get both boxes at the beginning of the score
+  // they will then wait for each other before beginning
+  // beginning_procedure(); 
+
+#if MASTER == 0
+  slave_resync_procedure();
+#endif
+  setupAngle();
+  getAngle(); 
+  reset_expected_angle(local_angle);
   servoPID.SetMode(AUTOMATIC);
+
+
 
   delay(100);
 }
@@ -112,10 +137,27 @@ void loop() {
   receiveUdp(); // UDP INPUT 
 
   servoLoop(); //loops_slave OR loop_master
+
+#if MASTER == 1
+  handleWebClient();
+#endif
+
 }
 
 // ######## FONCTION MODULO FLOAT ############
 float f_mod(float a, float n) {          
   return a - n * floor(a / n);
+}
+
+void set_playback_mode(int mode) {
+  //should be used to set the mode
+  playback_mode = mode;
+  if (playback_mode == 0) {playback_mode_char = "Infinite Loop";}
+  else if (playback_mode == 1) {playback_mode_char = "1 Loop Every 5min";number_of_loops_between_pauses = 1; pause_between_loops = 300;}
+  else if (playback_mode == 2) {playback_mode_char = "1 Loop Every Hour";number_of_loops_between_pauses = 1; pause_between_loops = 3600;}
+  else if (playback_mode == 3) {playback_mode_char = "1 Loop Every 10sec";number_of_loops_between_pauses = 1; pause_between_loops = 10;}
+  else {playback_mode_char = "unknown loop mode";};
+  updatePlaybackModeEeprom(); // this will only update if the mode has changed
+  Serial.print("Activated loop mode : "); Serial.println(playback_mode_char);
 }
 

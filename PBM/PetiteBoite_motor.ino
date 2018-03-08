@@ -4,7 +4,7 @@
 Motor M1(0x30, _MOTOR_B, 15000); //PWM frequency: 15 kHz
 
 //##################
-// IMPORTANT : THIS FUNCTION HAS A 100MS LATENCY
+// IMPORTANT : THIS FUNCTION HAS A 100MS LATENCY => USE MODIFIED LIBRARY WITH LATENCY REDUCED TO 10ms
 //##################
 
 void writeSpeed(float speed_to_write) {

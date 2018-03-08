@@ -13,6 +13,7 @@ void setupAngle() {
 
 float getFirstAngle() {
   float raw_angle_with_offset = angleSensor.angleR(U_DEG, true)-offset_angle;
+  Serial.print("raw_angle_with_offset : ");Serial.println(raw_angle_with_offset);
   if (raw_angle_with_offset < 0)
     laps_number++;
   if (simpleCheckMicroSwitch() == LOW)

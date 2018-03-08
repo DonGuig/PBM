@@ -3,6 +3,7 @@
 
 bool init_eeprom = false;
 float offset_eeprom;
+int playback_mode_eeprom;
 
 void setupEeprom() {
   EEPROM.begin(512);
@@ -15,6 +16,10 @@ void setupEeprom() {
     EEPROM.get(0, offset_angle);
     Serial.print("Offset EEPROM :");Serial.println(offset_angle);
   }
+  //sizeof(offset_angle) is the adress we are reading from : we want to read AFTER the bytes used for offset_angle
+  EEPROM.get(sizeof(offset_angle), playback_mode_eeprom);
+  Serial.print("playback_mode EEPROM :");Serial.println(playback_mode_eeprom);
+  set_playback_mode(playback_mode_eeprom);
 }
 
 void updateEeprom() {
@@ -25,6 +30,16 @@ void updateEeprom() {
     EEPROM.put(0,offset_angle);
     EEPROM.commit();
     init_eeprom = false;
+  }
+}
+
+void updatePlaybackModeEeprom(){
+  //sizeof(offset_angle) is the adress we are writing at : we want to write AFTER the bytes used for offset_angle
+
+  if (EEPROM.get(sizeof(offset_angle),playback_mode_eeprom)!= playback_mode) {
+    Serial.println("About to write playback_mode to EEPROM");
+    EEPROM.put(sizeof(offset_angle), playback_mode);
+    EEPROM.commit();
   }
 }
 
