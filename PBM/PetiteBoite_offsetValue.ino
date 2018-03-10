@@ -136,7 +136,7 @@ float addOffsetValue(float loc_angle) {
   else if (loc_angle < 154)
     loc_angle += -0.8;
   else if (loc_angle < 176)
-    loc_angle += -1.1;
+    loc_angle += -0.7;
   else if (loc_angle < 227)
     loc_angle += -1.4;
   else if (loc_angle < 256)
@@ -163,8 +163,10 @@ float addOffsetValue(float loc_angle) {
     loc_angle += -9.4;
   else if (loc_angle < 596)
     loc_angle += -9.2;
-  else if (loc_angle < 666)
+  else if (loc_angle < 641)
     loc_angle += -8.9;
+  else if (loc_angle < 682)
+    loc_angle += -8.6;
   else if (loc_angle < 800)
     loc_angle += -9.2;
   else 

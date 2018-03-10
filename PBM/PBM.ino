@@ -1,6 +1,6 @@
 //// SELECTION MASTER or SLAVE
-#define MASTER 1
-#define SerialNumber 3 //Used to make array with value for inaccuracy
+#define MASTER 0
+#define SerialNumber 2 //Used to make array with value for inaccuracy
 /*
  * ELECTRONIC CONNECTION :
  * 
@@ -85,7 +85,7 @@ void setup() {
 
   delay(50);
 
-  writeSpeed(0);
+  writeSpeed(1.4);
 
   Serial.println("");Serial.println("########## START Petite Boite Musique #########");
 
@@ -156,7 +156,7 @@ void set_playback_mode(int mode) {
   else if (playback_mode == 1) {playback_mode_char = "1 Loop Every 5min";number_of_loops_between_pauses = 1; pause_between_loops = 300;}
   else if (playback_mode == 2) {playback_mode_char = "1 Loop Every Hour";number_of_loops_between_pauses = 1; pause_between_loops = 3600;}
   else if (playback_mode == 3) {playback_mode_char = "1 Loop Every 10sec";number_of_loops_between_pauses = 1; pause_between_loops = 10;}
-  else {playback_mode_char = "unknown loop mode";};
+  else {playback_mode = 0;playback_mode_char = "unknown loop mode";};
   updatePlaybackModeEeprom(); // this will only update if the mode has changed
   Serial.print("Activated loop mode : "); Serial.println(playback_mode_char);
 }

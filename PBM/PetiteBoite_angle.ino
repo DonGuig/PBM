@@ -40,7 +40,7 @@ void getAngle() {
   // Please note that this function has less than 1ms delay
   // RAW ANGLE
   float raw_angle = angleSensor.angleR(U_DEG, true);
-  if (abs(raw_angle - old_raw_angle) < 5.) { // Avoid near 0/360
+  if (abs(raw_angle - old_raw_angle) < 5.) { // Avoid near 0/360 (for the raw angle of the sensor)
     float row_angle_with_offset = raw_angle - offset_angle;   
     if (row_angle_with_offset - old_row_angle_with_offset < -300. && sync_millis() - laps_timer > 1000) {   // Happen when sensor is near 0/360 
       laps_number ++;
@@ -53,6 +53,7 @@ void getAngle() {
     old_local_time = local_time;
     old_local_angle = local_angle;
     old_row_angle_with_offset = row_angle_with_offset;
+
   }
   else {
     Serial.print("------- ERROR RAW ANGLE MESUREMENT old_raw : ");
@@ -63,9 +64,16 @@ void getAngle() {
 }
 
 void reset_expected_angle(float reset_angle) {
-  Serial.print("reset angle to : "); Serial.println(reset_angle);
+  if (reset_angle < 0.0) {
+    reset_angle = 0.0;
+    Serial.println("Reset expected angle out of bounds, forcing at 0.0");
+  }
+
   start_angle = reset_angle;
   expected_angle = reset_angle;
+
+  Serial.print("reset angle to : "); Serial.println(reset_angle);
+  
   millis_at_start_of_part = sync_millis();
 }
 
