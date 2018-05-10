@@ -1,8 +1,8 @@
 //// SELECTION MASTER or SLAVE
 #define MASTER 1
-#define SerialNumber 3 //Used to make array with value for inaccuracy
+#define SerialNumber 1 //Used to make array with value for inaccuracy
 #include <PID_v1.h>
-#define Firmware "0.02 2018/05/09"
+#define Firmware "0.06 2018/05/10"
 
 /*UPDATE PROCEDURE :
  *

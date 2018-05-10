@@ -5,73 +5,105 @@ float addOffsetValue(float loc_angle) {
 #if SerialNumber == 1 // Marseilleise #1
 
   if (loc_angle < 28)
-    loc_angle += -1.2;
+    loc_angle += -0.5;
   else if (loc_angle < 35 )
-    loc_angle += -1;
-  else if (loc_angle < 44 )
-    loc_angle += -0.2;
-  else if (loc_angle < 60)
-    loc_angle += 0;
-  else if (loc_angle < 66)
-    loc_angle += 0.3;
-  else if (loc_angle < 80)
-    loc_angle += 0.9;
-  else if (loc_angle < 100)
-    loc_angle += 1.25;
-  else if (loc_angle < 125)
-    loc_angle += 2.1;
-  else if (loc_angle < 137)
-    loc_angle += 1.8;
-  else if (loc_angle < 142)
-    loc_angle += -0.2;
-  else if (loc_angle < 183)
     loc_angle += 0.5;
+  else if (loc_angle < 44 )
+    loc_angle += 1.8;
+  else if (loc_angle < 53)
+    loc_angle += 2.3;
+  else if (loc_angle < 60)
+    loc_angle += 2.6;
+  else if (loc_angle < 66)
+    loc_angle += 2.9;
+  else if (loc_angle < 71)
+    loc_angle += 3.3;
+  else if (loc_angle < 80)
+    loc_angle += 3.5;
+  else if (loc_angle < 100)
+    loc_angle += 3.45;
+  else if (loc_angle < 119)
+    loc_angle += 2.7;
+  else if (loc_angle < 125)
+    loc_angle += 2.3;
+  else if (loc_angle < 137)
+    loc_angle += 1.5;
+  else if (loc_angle < 142)
+    loc_angle += -0.3;
+  else if (loc_angle < 162)
+    loc_angle += -0.3;
+  else if (loc_angle < 183)
+    loc_angle += -0.8;
   else if (loc_angle < 211)
-    loc_angle += -0.4;
+    loc_angle += -0.1;
   else if (loc_angle < 229)
-    loc_angle += -1.1;
+    loc_angle += 0.6;
   else if (loc_angle < 246)
-    loc_angle += -1.1;
+    loc_angle += 1.6;
+  else if (loc_angle < 254)
+    loc_angle += 2.9;
   else if (loc_angle < 264)
-    loc_angle += 0;
+    loc_angle += 2.6;
   else if (loc_angle < 276)
-    loc_angle += -0.5;
+    loc_angle += 2.3;
+  else if (loc_angle < 298)
+    loc_angle += 1.1;
   else if (loc_angle < 310)
-    loc_angle += -0.5;
-  else if (loc_angle < 336)
-    loc_angle += -1;
-  else if (loc_angle < 337)
-    loc_angle += -1.6;
+    loc_angle += 0.2;
+  else if (loc_angle < 324)
+    loc_angle += -1.0;
+  else if (loc_angle < 331)
+    loc_angle += -1.3;
+  else if (loc_angle < 334)
+    loc_angle += -1.4;
   else if (loc_angle < 342)
+    loc_angle += -2.1;
+  else if (loc_angle < 346)
     loc_angle += -1.9;
   else if (loc_angle < 354)
-    loc_angle += -2.0;
+    loc_angle += -3.1;
   else if (loc_angle < 390)
-    loc_angle += -9.7;
-  else if (loc_angle < 421)
-    loc_angle += -8.75;
-  else if (loc_angle < 443)
-    loc_angle += -7.9;
-  else if (loc_angle < 457)
-    loc_angle += -7.5;
-  else if (loc_angle < 482)
-    loc_angle += -6.8;
-  else if (loc_angle < 512)
-    loc_angle += -6.5;
-  else if (loc_angle < 530)
-    loc_angle += -7.9;
-  else if (loc_angle < 552)
-    loc_angle += -8;  
-  else if (loc_angle < 578)
-    loc_angle += -9.0;
-  else if (loc_angle < 600)
-    loc_angle += -9.6;
-  else if (loc_angle < 695)
     loc_angle += -8.5;
-  else if (loc_angle < 710)
-    loc_angle += -8.7;
+  else if (loc_angle < 417)
+    loc_angle += -8.0;
+  else if (loc_angle < 430)
+    loc_angle += -5.7;
+  else if (loc_angle < 445)
+    loc_angle += -5.4;
+  else if (loc_angle < 457)
+    loc_angle += -5.3;
+  else if (loc_angle < 482)
+    loc_angle += -5.5;
+  else if (loc_angle < 512)
+    loc_angle += -6.7;
+  else if (loc_angle < 524)
+    loc_angle += -8.3;
+  else if (loc_angle < 542)
+    loc_angle += -8.9; 
+  else if (loc_angle < 552)
+    loc_angle += -8.6;  
+  else if (loc_angle < 578)
+    loc_angle += -8.4;
+  else if (loc_angle < 591)
+    loc_angle += -8.1;
+  else if (loc_angle < 600)
+    loc_angle += -7.3;
+  else if (loc_angle < 638)
+    loc_angle += -6.0;
+  else if (loc_angle < 650)
+    loc_angle += -5.4;
+  else if (loc_angle < 656)
+    loc_angle += -6.4;
+  else if (loc_angle < 675)
+    loc_angle += -7.0;
+  else if (loc_angle < 686)
+    loc_angle += -7.8;
+  else if (loc_angle < 695)
+    loc_angle += -8.8;
+  else if (loc_angle < 709)
+    loc_angle += -9.4;
   else if (loc_angle < 730)
-    loc_angle += -9.5;
+    loc_angle += -10.2;
   else 
     loc_angle = loc_angle;  
   loc_angle += 1.; // SAME START
