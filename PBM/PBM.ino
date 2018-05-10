@@ -1,17 +1,19 @@
 //// SELECTION MASTER or SLAVE
-#define MASTER 0
-#define SerialNumber 2 //Used to make array with value for inaccuracy
-/*
- * ELECTRONIC CONNECTION :
- * 
- * I2C input (sensor & motor) : SCL D1, SDA D2
- * Button input : GND, (D0 -> 10k/3.3V)
- * Battery Input : GND --> 220 Ohms --> A0 <-- 1000 Ohms <-- Battery
- * 
-*/
-
+#define MASTER 1
+#define SerialNumber 3 //Used to make array with value for inaccuracy
 #include <PID_v1.h>
+#define Firmware "0.02 2018/05/09"
 
+/*UPDATE PROCEDURE :
+ *
+ * On web Browser : IP/update
+ * Choose Bin File 
+ * Update
+ * DONE !
+ * 
+ */
+
+ 
 float goal_speed_part1 = 10.05; //°.s-1  (OLD : 9.78)
 float goal_speed_part2 = 11.22;
 
@@ -38,8 +40,6 @@ bool approached_end_of_part = 0;
 
 // variables used by PID library
 double Kp=1.0, Ki=0.5, Kd=0.00;
-
-
 
 int PID_sample_time = 50; // Set to 105ms because writeSpeed takes 100ms
 // due to the way PID_library is coded, having a sample time below 100ms could
@@ -87,12 +87,12 @@ void setup() {
 
   writeSpeed(1.4);
 
-  Serial.println("");Serial.println("########## START Petite Boite Musique #########");
+  Serial.println("");Serial.println("########## START Double Music Box on Glass #########");
 
   setupWifi();
   
   setupEeprom();
-
+  
   configWebPage();
 
   setupMicroSwitch();
@@ -102,7 +102,6 @@ void setup() {
   //getAngle();
   //writeSpeed(start_PWM_speed);
   //delay(1000);
-
   
   servoPID.SetOutputLimits(0.5, 4.0);
 
@@ -125,8 +124,6 @@ void setup() {
   reset_expected_angle(local_angle);
   servoPID.SetMode(AUTOMATIC);
 
-
-
   delay(100);
 }
 
@@ -138,10 +135,7 @@ void loop() {
 
   servoLoop(); //loops_slave OR loop_master
 
-#if MASTER == 1
-  handleWebClient();
-#endif
-
+  handleWebClient(); 
 }
 
 // ######## FONCTION MODULO FLOAT ############

@@ -1,7 +1,10 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
+#include <ESP8266HTTPUpdateServer.h>
 
 ESP8266WebServer server (80);
+ESP8266HTTPUpdateServer httpUpdater;
+
 String webPage = "";
 String rebootWebPage = "\
 \
@@ -10,20 +13,23 @@ String rebootWebPage = "\
 <p><i><b>Note :</b> each time the two boxes restart, they will do a few loops before going to their configured playback mode.</i></p>";
 
 void makeWebPage() {
-  webPage = "<h1>Web Server Boite a Musique";
-#ifdef SLAVE
-  webPage += " -- SLAVE BOX ";
-#endif
-#ifdef MASTER
-  webPage += " -- MASTER BOX ";
-#endif
-  webPage += ("<h1>Petites Boite a musique - Control Interface</h1>\
+  webPage = "<h1>Web Server - Double music box on glass - Anri Sala </h1>";
+  
+#if MASTER
+  webPage += "<h1> MASTER BOX </h1>";
+  webPage += ("<h1>Control Interface</h1>\
   <p>Infinite loop <a href=\"InfiniteLoop\"><button>start</button></a></p>\
   <p>1 loop every 5 min <a href=\"Every5min\"><button>start</button></a></p>\
   <p>1 loop every hour <a href=\"EveryHour\"><button>start</button></a></p>\
   <p>1 loop every 10sec <a href=\"Every10sec\"><button>start</button></a></p>\
   <h1 style=\"text-align:center;\">Current mode : <strong style=\"color:rgb(191, 34, 0);\">" + playback_mode_char + "</strong></h1>" +
-  "<p><i><b>Note :</b> each time the two boxes restart, they will do a few loops before going to their configured playback mode.</i></p>");
+  "<p><i><b>Note :</b> each time the two boxes restart, they will do a few loops before going to their configured playback mode</i></p>");
+
+#else
+  webPage += "<h1> SLAVE BOX </h1>\
+              <p> To modify the mode go to the Master : 192.168.1.1 </p>";
+#endif
+  webPage += "<p></p><p>Id : BOX-#" + String(SerialNumber) + " v" + Firmware + "</p>";
 }
 
 void handleWebClient() {
@@ -33,6 +39,7 @@ void handleWebClient() {
 void configWebPage() {
 
   makeWebPage();
+  
   server.send(200, "text/html", webPage);
 
   server.on("/", [](){
@@ -67,7 +74,13 @@ void configWebPage() {
     server.send(200, "text/html", rebootWebPage);
     ESP.restart();
   });
-  
+
+  MDNS.begin("BOX-#"+SerialNumber);
+  httpUpdater.setup(&server, "HAL_SAS", "HalForArt");
+
   server.begin();
+
+  MDNS.addService("http", "tcp", 80);
+  
   Serial.println("HTTP server started");
 }

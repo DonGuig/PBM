@@ -7,7 +7,7 @@
 
 
 //----------------------------- WIFI -------------------------------------//
-/**/const char *ssid = "EspHalSalaBox1", *password = "iloveesp8266";      //
+/**/const char *ssid = "S2PBM", *password = "Anri_Sala_8266";      //
 /**/IPAddress gateway(192,168,1,1), subnet(255,255,255,0);                //
 /**/                                                                      //
 /**/#if MASTER == 1                                                       //
@@ -32,7 +32,7 @@ void setupWifi() {
 //  WiFi.setAutoConnect(false);
   WiFi.setAutoConnect(false);
   WiFi.softAPConfig(local_IP, gateway, subnet);    
-  WiFi.softAP(ssid, password, 1, 1);  //SSID, PASS, CANAL, CACHÉ
+  WiFi.softAP(ssid, password, 1, 0);  //SSID, PASS, CANAL, CACHÉ
 
 /*
   if ( MDNS.begin ( host ) ) {
@@ -59,7 +59,7 @@ void setupWifi() {
   Serial.println("");Serial.println("WiFi connected");
  
 #endif
-  WiFi.setOutputPower(20);
+//  WiFi.setOutputPower(20);
   Serial.println("WIFI SETUP INFORMATION");
   WiFi.printDiag(Serial);
   Serial.println("END WIFI SETUP INFORMATION");
