@@ -8,7 +8,7 @@ ESP8266HTTPUpdateServer httpUpdater;
 String webPage = "";
 String rebootWebPage = "\
 \
-<h1> The playback mode has changed. Please restart the TWO boxes. Please reconnect to wifi \"EspHalSalaBox1\" if you wish to reconfigure it.</h1>\
+<h1> The playback mode has changed. Please restart the TWO boxes. Please reconnect to wifi \"S2PBM\" if you wish to reconfigure it.</h1>\
 \
 <p><i><b>Note :</b> each time the two boxes restart, they will do a few loops before going to their configured playback mode.</i></p>";
 
@@ -22,6 +22,7 @@ void makeWebPage() {
   <p>1 loop every 5 min <a href=\"Every5min\"><button>start</button></a></p>\
   <p>1 loop every hour <a href=\"EveryHour\"><button>start</button></a></p>\
   <p>1 loop every 10sec <a href=\"Every10sec\"><button>start</button></a></p>\
+  <p>1 loop every minute <a href=\"EveryMin\"><button>start</button></a></p>\
   <h1 style=\"text-align:center;\">Current mode : <strong style=\"color:rgb(191, 34, 0);\">" + playback_mode_char + "</strong></h1>" +
   "<p><i><b>Note :</b> each time the two boxes restart, they will do a few loops before going to their configured playback mode</i></p>");
 
@@ -58,6 +59,7 @@ void configWebPage() {
     set_playback_mode(1);
     makeWebPage();
     server.send(200, "text/html", rebootWebPage);
+    delay(1000);
     ESP.restart();
   });
 
@@ -65,6 +67,7 @@ void configWebPage() {
     set_playback_mode(2);
     makeWebPage();
     server.send(200, "text/html", rebootWebPage);
+    delay(1000);
     ESP.restart();
   });
 
@@ -72,6 +75,15 @@ void configWebPage() {
     set_playback_mode(3);
     makeWebPage();
     server.send(200, "text/html", rebootWebPage);
+    delay(1000);
+    ESP.restart();
+  });
+
+  server.on("/EveryMin", [](){
+    set_playback_mode(4);
+    makeWebPage();
+    server.send(200, "text/html", rebootWebPage);
+    delay(1000);
     ESP.restart();
   });
 

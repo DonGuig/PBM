@@ -63,14 +63,18 @@ bool checkAndUpdateMicroSwitchState() {
             servoPID.SetMode(MANUAL);
             writeSpeed(0);
             //and do nothing but check any user interaction
-            while ((millis() - millis_at_start_of_pause)/1000 < pause_between_loops) {
+            unsigned long elapsed_millis_on_pause = (millis() - millis_at_start_of_pause)/1000;
+            while ( elapsed_millis_on_pause < pause_between_loops) {
               handleWebClient(); 
               delay(10);
+              elapsed_millis_on_pause = (millis() - millis_at_start_of_pause)/1000;
             }
             //re-initialize everything to start moving again
             pause = false;
             loop_count = 1;
             reset_laps();
+            send_master_play();
+            send_master_play();
             send_master_play();
             getAngle();
             reset_expected_angle(local_angle);
@@ -92,6 +96,7 @@ bool checkAndUpdateMicroSwitchState() {
           // do nothing but wait for master to play again
           while (will_stop_at_microswitch) {
             receiveUdp(); // when "PLAY" is received, will_stop_at_microswitch gets changed to false
+            checkWifi(); // IMPORTANT if loop mode >= 5'
             delay(10);
           }
           Serial.println("Playing at master's request");
