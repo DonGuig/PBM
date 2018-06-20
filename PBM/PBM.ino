@@ -1,8 +1,8 @@
 //// SELECTION MASTER or SLAVE
 #define MASTER 1
-#define SerialNumber 3 //Used to make array with value for inaccuracy
+#define SerialNumber 1 //Used to make array with value for inaccuracy
 #include <PID_v1.h>
-#define Firmware "1.0 2018/05/30"
+#define Firmware "2.2 2018/06/20"
 
 /*UPDATE PROCEDURE :
  *
@@ -13,7 +13,6 @@
  * 
  */
 
- 
 float goal_speed_part1 = 10.05; //°.s-1  (OLD : 9.78)
 float goal_speed_part2 = 11.22;
 
@@ -69,6 +68,7 @@ unsigned int loops_before_end_of_startup_phase = 2;
 bool pause = false;
 unsigned long millis_at_start_of_pause = 0;
 bool will_stop_at_microswitch = false; // for the slave
+bool play_now = false;
 
 // For the beginning procedure (get both boxes at the start of the score)
 bool slave_ready_to_begin = false;
@@ -147,10 +147,10 @@ void set_playback_mode(int mode) {
   //should be used to set the mode
   playback_mode = mode;
   if (playback_mode == 0) {playback_mode_char = "Infinite Loop";}
-  else if (playback_mode == 1) {playback_mode_char = "1 Loop Every 5min";number_of_loops_between_pauses = 1; pause_between_loops = 300;}
-  else if (playback_mode == 2) {playback_mode_char = "1 Loop Every Hour";number_of_loops_between_pauses = 1; pause_between_loops = 3600;}
-  else if (playback_mode == 3) {playback_mode_char = "1 Loop Every 10sec";number_of_loops_between_pauses = 1; pause_between_loops = 10;}
-  else if (playback_mode == 4) {playback_mode_char = "1 Loop Every 1min";number_of_loops_between_pauses = 1; pause_between_loops = 60;}
+  else if (playback_mode == 1) {playback_mode_char = "1 Loop Every 5 minutes";number_of_loops_between_pauses = 1; pause_between_loops = 229;}//1 loop 71 secondess
+  else if (playback_mode == 2) {playback_mode_char = "3 Loop Every 1 Hour";number_of_loops_between_pauses = 3; pause_between_loops = 3387;}//3 loop 213 secondes
+  else if (playback_mode == 3) {playback_mode_char = "1 Loop Every 30 secondes";number_of_loops_between_pauses = 1; pause_between_loops = 30;}
+  else if (playback_mode == 4) {playback_mode_char = "1 Loop Every 1 minute";number_of_loops_between_pauses = 1; pause_between_loops = 60;}
   else {playback_mode = 0;playback_mode_char = "unknown loop mode";};
   updatePlaybackModeEeprom(); // this will only update if the mode has changed
   Serial.print("Activated loop mode : "); Serial.println(playback_mode_char);

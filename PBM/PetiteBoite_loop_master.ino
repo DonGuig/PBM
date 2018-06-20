@@ -42,7 +42,7 @@ void servoLoop() {
     writeSpeed(motor_PWM_speed);// !! 10ms delay with modified library
 
 //    Serial.print(goal_speed);Serial.print(";");
-
+/*
     Serial.print(expected_angle - local_angle);Serial.print(";");
     Serial.print(raw_expected_angle);Serial.print(";");
     Serial.print(local_angle);Serial.print(";");
@@ -50,7 +50,7 @@ void servoLoop() {
 
     Serial.print(expected_angle);Serial.print(";");
     Serial.print(motor_PWM_speed);Serial.println(";");
-
+*/
   }
 }
 
@@ -80,6 +80,11 @@ void send_master_stop_next_loop() {
 void send_master_play() {
   Serial.println("sending PLAY");
   sendUdp("PLAY");
+}
+
+void send_master_isAlive() {
+  Serial.println("sending ISALIVE");
+  sendUdp("ISALIVE");
 }
 
 void send_master_begin() { // first play after the unit got turned on

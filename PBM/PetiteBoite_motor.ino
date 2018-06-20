@@ -26,3 +26,8 @@ void writeSpeed(float speed_to_write) {
     else
       M1.setmotor(_CW, motor_PWM_speed);
 }
+
+void setMotorStandby() {
+  M1.setmotor(_STANDBY);
+}
+

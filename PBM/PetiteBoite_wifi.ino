@@ -98,6 +98,7 @@ void routeUdp() {
   receive_slave_stop_next_loop(strAddress);
   receive_slave_play(strAddress);
   receive_slave_begin(strAddress);
+  receive_slave_isAlive(strAddress);
 #endif
 }
 

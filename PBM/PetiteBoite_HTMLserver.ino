@@ -18,11 +18,14 @@ void makeWebPage() {
 #if MASTER
   webPage += "<h1> MASTER BOX </h1>";
   webPage += ("<h1>Control Interface</h1>\
-  <p>Infinite loop <a href=\"InfiniteLoop\"><button>start</button></a></p>\
-  <p>1 loop every 5 min <a href=\"Every5min\"><button>start</button></a></p>\
-  <p>1 loop every hour <a href=\"EveryHour\"><button>start</button></a></p>\
-  <p>1 loop every 10sec <a href=\"Every10sec\"><button>start</button></a></p>\
-  <p>1 loop every minute <a href=\"EveryMin\"><button>start</button></a></p>\
+  <p>Infinite loop <a href=\"InfiniteLoop\"><button>SET</button></a></p>\
+  <p>1 loop and 30 secondes break <a href=\"Every10sec\"><button>SET</button></a></p>\  
+  <p>1 loop and 1 minute break <a href=\"EveryMin\"><button>SET</button></a></p>\
+  <p>1 loop every 5 minutes <a href=\"Every5min\"><button>SET</button></a></p>\
+  <p>3 loop every 1 hour <a href=\"EveryHour\"><button>SET</button></a></p>\
+  <p></p>\
+  <h1> START MUSIC BOX MANUALY </h1>\
+  <p> <a href=\"PlayNow\"><button>PLAY NOW</button></a></p>\
   <h1 style=\"text-align:center;\">Current mode : <strong style=\"color:rgb(191, 34, 0);\">" + playback_mode_char + "</strong></h1>" +
   "<p><i><b>Note :</b> each time the two boxes restart, they will do a few loops before going to their configured playback mode</i></p>");
 
@@ -86,6 +89,14 @@ void configWebPage() {
     delay(1000);
     ESP.restart();
   });
+
+  server.on("/PlayNow", [](){
+    makeWebPage();
+    server.send(200, "text/html", webPage);
+    play_now = true;
+  });
+
+
 
   MDNS.begin("BOX-#"+SerialNumber);
   httpUpdater.setup(&server, "HAL_SAS", "HalForArt");

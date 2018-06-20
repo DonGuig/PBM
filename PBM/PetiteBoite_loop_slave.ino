@@ -5,16 +5,16 @@
 void servoLoop() {
   if (new_point) {
     getAngle();
-    
+ /*   
     Serial.print(local_angle);Serial.print(";");
     Serial.print(master_angle - local_angle);Serial.print(";");
     Serial.print(master_angle);Serial.print(";");
     Serial.print(long(local_time - master_time));Serial.print(";");
     Serial.print(motor_PWM_speed);Serial.println(";");
-
+*/
     servoPID.Compute();
 
-    writeSpeed(motor_PWM_speed); // !! Takes about 100ms
+    writeSpeed(motor_PWM_speed);
 
     new_point = false;     
   }
@@ -80,4 +80,9 @@ void receive_slave_begin(char* strAddress) { // This is when the units got turne
   }
 }
 
+void receive_slave_isAlive(char* strAddress) { // do nothing
+  if (strcmp(strAddress,"ISALIVE") == 0) {
+    Serial.println("Received_isAlive @"+ String(millis()));
+  }
+}
 #endif
