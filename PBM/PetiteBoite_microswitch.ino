@@ -7,13 +7,14 @@ void setupMicroSwitch() {
   pinMode(microSwitchPin, INPUT);
   microSwitchState = digitalRead(microSwitchPin);
   old_microSwitchState = microSwitchState;
-/*  if (microSwitchState == HIGH) { 
-    goal_speed = goal_speed_part1; 
+ /////////// MODIF MODE MANUAL /////
+  if (microSwitchState == HIGH) { 
+    motor_PWM_speed = PWM_speed_part1; 
   }
   else { 
-    goal_speed = goal_speed_part2; 
+    motor_PWM_speed = PWM_speed_part2; 
   }
-*/
+  /////////////////////////////////////////
 }
 
 bool simpleCheckMicroSwitch() {
@@ -37,7 +38,8 @@ bool checkAndUpdateMicroSwitchState() {
         reset_offset();
         updateEeprom();
 
-
+        ///////MODIF MODE MANUAL//////
+        motor_PWM_speed = PWM_speed_part1;
 
        
 #if MASTER == 1
@@ -50,8 +52,9 @@ bool checkAndUpdateMicroSwitchState() {
 
         if ((playback_mode == 0 || loops_before_end_of_startup_phase > 0)) {
           // we reset the PID
-          servoPID.SetMode(MANUAL);
-          servoPID.SetMode(AUTOMATIC);
+          //servoPID.SetMode(MANUAL); // MODIF MODE MANUAL
+          //servoPID.SetMode(AUTOMATIC); // MODIF MODE MANUAL
+          delay(1);
         }
         else if (playback_mode != 0 && loops_before_end_of_startup_phase == 0) {
           loop_count++;
@@ -82,12 +85,14 @@ bool checkAndUpdateMicroSwitchState() {
             send_master_play();
             getAngle();
             reset_expected_angle(local_angle);
-            servoPID.SetMode(AUTOMATIC);
+            // servoPID.SetMode(AUTOMATIC); //MODIF MODE MANUAL
+            servoPID.SetMode(MANUAL); // MODIF MODE MANUAL
           }
           else {
             servoPID.SetMode(MANUAL);
-            servoPID.SetMode(AUTOMATIC);
+            // servoPID.SetMode(AUTOMATIC); // MODIF MODE MANUAL
           }
+        motor_PWM_speed = PWM_speed_part1;
         }
 #else
         //delay(10);
@@ -131,6 +136,8 @@ bool checkAndUpdateMicroSwitchState() {
       else { // we're entering part2
 
 #if MASTER == 1
+      motor_PWM_speed = PWM_speed_part2; // MODIF MODE MANUAL
+
 // We are going to signal the slave that at the end of this loop
 // it will have to stop
         if (playback_mode !=0 && loops_before_end_of_startup_phase == 0){

@@ -1,4 +1,4 @@
-//// Permet d'enregistré en dur la valeur de offset_angle pour accelerer le demarage
+//// Permet d'enregistré en dur la valeur de offset_angle pour accelerer le demarrage
 #include <EEPROM.h>
 
 bool init_eeprom = false;

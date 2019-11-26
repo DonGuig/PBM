@@ -8,6 +8,7 @@ void servoLoop() {
 
     getAngle();
     compute_expected_angle();
+    //Serial.println(local_angle);
   }
 
     //When we're getting very close to the change of part
@@ -51,6 +52,22 @@ void servoLoop() {
     Serial.print(expected_angle);Serial.print(";");
     Serial.print(motor_PWM_speed);Serial.println(";");
 */
+  }
+}
+
+void servoLoopManual(){
+  // To be used when the PID is set to manual (off)
+  if ((sync_millis() - last_pid_compute_time ) > PID_sample_time - 3) { // Servo LOOP
+    //NOTE : we only update the angle measurement if we're 3ms from PID computing
+
+    getAngle();
+    compute_expected_angle();
+    //Serial.println(local_angle);
+    last_pid_compute_time = sync_millis();
+
+    writeSpeed(motor_PWM_speed);
+
+    delay(1);
   }
 }
 

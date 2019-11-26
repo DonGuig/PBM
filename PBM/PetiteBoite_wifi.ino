@@ -7,7 +7,7 @@
 
 
 //----------------------------- WIFI -------------------------------------//
-/**/const char *ssid = "S2PBM", *password = "Anri_Sala_8266";      //
+/**/const char *ssid = "SCLASHPBM", *password = "Anri_Sala_8266";      //
 /**/IPAddress gateway(192,168,1,1), subnet(255,255,255,0);                //
 /**/                                                                      //
 /**/#if MASTER == 1                                                       //

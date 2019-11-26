@@ -3,6 +3,7 @@
 float addOffsetValue(float loc_angle) {
 
 #if SerialNumber == 1 // Marseilleise #1
+  Serial.println("POP");
 
   if (loc_angle < 33)
     loc_angle += -1.6;
@@ -167,6 +168,7 @@ float addOffsetValue(float loc_angle) {
 #endif
 
 #if SerialNumber == 2 // Internationale #2
+  Serial.println("POP");
   if (loc_angle < 30) 
     loc_angle += 1;
   else if (loc_angle < 56)
@@ -290,6 +292,8 @@ float addOffsetValue(float loc_angle) {
 
 #if SerialNumber == 3 // Marseillaise #3
 // time between switch and 1st note : 1880ms
+
+  Serial.println("POP");
   if (loc_angle < 30)
     loc_angle += 0;
   else if (loc_angle < 40)
@@ -425,6 +429,8 @@ float addOffsetValue(float loc_angle) {
 #endif
 
 #if SerialNumber == 4 // International #4
+
+  Serial.println("POP");
   if (loc_angle < 23)
     loc_angle += 0.2;
   if (loc_angle < 35)
@@ -530,6 +536,11 @@ float addOffsetValue(float loc_angle) {
     loc_angle = loc_angle;
 */
   loc_angle += -2.8; // SAME START
+
+#endif
+
+#if SerialNumber == 5 //Serial Number 5 is in fact one of the Serial Number 1 to 4 boxes, repurposed with the Clash Score
+  loc_angle = loc_angle;
 
 #endif
 

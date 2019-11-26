@@ -6,6 +6,9 @@ address:
 freq:
 	PWM's frequency		
 */
+
+
+
 Motor::Motor(uint8_t address, uint8_t motor, uint32_t freq)
 {
 	_use_STBY_IO=false;

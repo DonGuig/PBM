@@ -8,12 +8,12 @@ ESP8266HTTPUpdateServer httpUpdater;
 String webPage = "";
 String rebootWebPage = "\
 \
-<h1> The playback mode has changed. Please restart the TWO boxes. Please reconnect to wifi \"S2PBM\" if you wish to reconfigure it.</h1>\
+<h1> The playback mode has changed. Please restart the box. Please reconnect to wifi \"SCLASHPBM\" if you wish to reconfigure it.</h1>\
 \
-<p><i><b>Note :</b> each time the two boxes restart, they will do a few loops before going to their configured playback mode.</i></p>";
+";
 
 void makeWebPage() {
-  webPage = "<h1>Web Server - Double music box on glass - Anri Sala </h1>";
+  webPage = "<h1>Web Server - Clash Music Box - Anri Sala </h1>";
   
 #if MASTER
   webPage += "<h1> MASTER BOX </h1>";
@@ -26,8 +26,7 @@ void makeWebPage() {
   <p></p>\
   <h1> START MUSIC BOX MANUALY </h1>\
   <p> <a href=\"PlayNow\"><button>PLAY NOW</button></a></p>\
-  <h1 style=\"text-align:center;\">Current mode : <strong style=\"color:rgb(191, 34, 0);\">" + playback_mode_char + "</strong></h1>" +
-  "<p><i><b>Note :</b> each time the two boxes restart, they will do a few loops before going to their configured playback mode</i></p>");
+  <h1 style=\"text-align:center;\">Current mode : <strong style=\"color:rgb(191, 34, 0);\">" + playback_mode_char + "</strong></h1>");
 
 #else
   webPage += "<h1> SLAVE BOX </h1>\
