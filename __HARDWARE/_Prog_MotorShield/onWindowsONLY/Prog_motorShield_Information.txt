@@ -1,0 +1,27 @@
+Connection :
+UNO with CH340
+#on UNO
+RES <-> GND
+#on Motor SHield
+LINK RTS and 3.3V
+
+https://github.com/thomasfredericks/wemos_motor_shield/blob/master/README.md
+
+
+#connection MOTOR SHIELD / ARDUINO
+D1 <-> TX (or RX)
+D2 <-> RX (or TX
+GND
++3.3
+
+I use USB TTL interface with usb connector on it
+
+
+USAGE :
+#unlockq
+./stm32flash -k COM4
+#??
+./stm32flash -u COM4
+#update
+./stm32flash -v -w motor_shield.bin COM4
+
