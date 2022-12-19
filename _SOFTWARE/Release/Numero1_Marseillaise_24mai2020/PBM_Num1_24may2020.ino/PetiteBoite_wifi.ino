@@ -30,7 +30,7 @@ void setupWifi() {
 //  WiFi.setAutoConnect(false);
   WiFi.setAutoConnect(false);
   WiFi.softAPConfig(local_IP, gateway, subnet);    
-  WiFi.softAP(ssid, password, 1, 1);  //SSID, PASS, CANAL, CACHÉ
+  WiFi.softAP(ssid, password, 6, 1);  //SSID, PASS, CANAL, CACHÉ
 
 /*
   if ( MDNS.begin ( host ) ) {

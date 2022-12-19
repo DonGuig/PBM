@@ -2,7 +2,7 @@
 #define MASTER 1
 #define SerialNumber 1 //Used to make array with value for inaccuracy
 #include <PID_v1.h>
-#define Firmware "3.01 2020/05/18 PROD"
+#define Firmware "3.02 2020/07/10 PROD"
 
 
 
